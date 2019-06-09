@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:vsartist/src/global/uidata.dart';
+import 'package:vsartist/src/uploads/album-upload.dart';
 import 'package:vsartist/src/uploads/singles-upload.dart';
 import 'package:vsartist/src/uploads/uploads-model.dart';
 import 'package:vsartist/src/widgets/forms.dart';
 import 'package:vsartist/src/widgets/common-scaffold.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class SignlesUploadNumber extends StatefulWidget {
+class AlbumCover extends StatefulWidget {
   @override
-  _SignlesUploadNumberState createState() => _SignlesUploadNumberState();
+  _AlbumCoverState createState() => _AlbumCoverState();
 }
 
-class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
+class _AlbumCoverState extends State<AlbumCover> {
   FormsWidget formsWidget = FormsWidget();
   final scaffoldState = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
-  UploadSingles tracksModel = UploadSingles();
+  UploadAlbum tracksModel = UploadAlbum();
 
   String uploadCount;
-  String releaseNameTooltip =
-      'This is used to identify the upload of tracks and it is not seen by your listener';
-  List<Map<String, dynamic>> _trackList = [
-    {'count': '1', 'title': '1 track (Single)'},
-    {'count': '2', 'title': '2 track (Single)'},
-    {'count': '3', 'title': '3 track (Single)'},
-  ];
+  List _trackList = [];
+  File _image;
 
   var uploadDate = DateTime.now();
 
@@ -33,20 +31,34 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    getTrackNumber(1, 12);
     uploadDate = uploadDate.add(Duration(days: 7));
+  }
+
+  getTrackNumber(start, end) {
+    setState(() {
+      for (int i = start; i <= end; i++) _trackList.add(i);
+    });
   }
 
   trackLists() {
     return _trackList.map((item) {
       return new DropdownMenuItem<String>(
         child: new Text(
-          item['title'],
+          '${item.toString()} tracks',
           style: TextStyle(color: Colors.grey),
         ),
-        value: item['count'].toString(),
+        value: item.toString(),
       );
     }).toList();
+  }
+
+  selectGalleryImage() async {
+    var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = imageFile;
+      tracksModel.image = _image.path;
+    });
   }
 
   onChange(value) {
@@ -55,11 +67,13 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
     });
   }
 
-  onSaved(value) {
-    setState(() {
-      tracksModel.releaseName = value;
-    });
-  }
+  onSavedTitle(value) => setState(() {
+        tracksModel.title = value;
+      });
+
+  onSavedDescription(value) => setState(() {
+        tracksModel.description = value;
+      });
 
   List<Music> loopExpectedSongs(count) {
     List<Music> data = List();
@@ -75,20 +89,22 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
       formKey.currentState.save();
 
       if (uploadCount == null ||
-          tracksModel.releaseName == null ||
-          tracksModel.releaseDate == null) {
+          tracksModel.title == null ||
+          tracksModel.description == null ||
+          tracksModel.releaseDate == null ||
+          tracksModel.image == null) {
         scaffoldState.currentState.showSnackBar(new SnackBar(
             duration: Duration(seconds: 5),
             content: new Text('Fields cannot be empty')));
       } else {
-        tracksModel.tracksNumber = int.parse(uploadCount);
-        tracksModel.tracks = loopExpectedSongs(tracksModel.tracksNumber);
+        tracksModel.trackCount = int.parse(uploadCount);
+        tracksModel.tracks = loopExpectedSongs(tracksModel.trackCount);
 
         Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-          return new SinglesUpload(
-              pages: tracksModel.tracksNumber,
-              releaseName: tracksModel.releaseName,
-              uploadSingles: tracksModel,
+          return new AlbumUpload(
+              pages: tracksModel.trackCount,
+              releaseName: tracksModel.title,
+              uploadAlbum: tracksModel,
               page: 0);
         }));
       }
@@ -99,7 +115,7 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
   Widget build(BuildContext context) {
     return ScaffoldCommon(
       scaffoldState: scaffoldState,
-      appTitle: 'Number of Tracks',
+      appTitle: 'Album Cover',
       bodyData: Center(
         child: Theme(
           data: new ThemeData(primarySwatch: Colors.orange),
@@ -109,9 +125,16 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
                   shrinkWrap: true,
                   padding: EdgeInsets.only(left: 24.0, right: 24.0),
                   children: <Widget>[
-                    SizedBox(height: 15.0),
-                    formsWidget.sectionHeader('Release details'),
-                    SizedBox(height: 15.0),
+                    formsWidget.header('Album Banner'),
+                    formsWidget.fieldSpace(),
+                    formsWidget.imageInput('Upload Cover',_image, selectGalleryImage),
+                    
+                    formsWidget.sectionHeader('Album details'),
+                    formsWidget.fieldSpace(),
+                    formsWidget.textInput('Album title', onSavedTitle),
+                    formsWidget.fieldSpace(),
+                    formsWidget.textAreaInput('Album description', onSavedDescription),
+                    formsWidget.fieldSpace(),
                     formsWidget.dropdownField(
                         'Number of tracks', trackLists(), uploadCount, onChange,
                         label: 'Number of tracks'),
@@ -121,7 +144,6 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
                         format: DateFormat('yyyy-MM-dd'),
                         firstDate: uploadDate,
                         initialDate: uploadDate,
-                        //lastDate: uploadDate,
                         editable: false,
                         decoration:
                             formsWidget.formDecoration('Proposed Release Date'),
@@ -129,17 +151,7 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
                           print(dt);
                           setState(() => tracksModel.releaseDate = dt);
                         }),
-                    SizedBox(height: 20.0),
-                    formsWidget.textInput('Release Name', onSaved),
-                    Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Tooltip(
-                            message: releaseNameTooltip,
-                            child: Text(
-                              releaseNameTooltip,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
-                            ))),
+                    
                     SizedBox(height: 15.0),
                     Padding(
                         padding: const EdgeInsets.all(8.0),

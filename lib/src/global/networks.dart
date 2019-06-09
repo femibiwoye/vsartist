@@ -38,7 +38,7 @@ class NetworkRequest {
     };
 
     print('Get token is $token');
-    await http.get(Uri.encodeFull(UiData.tokenRefresh), headers: headers);
+    //await http.get(Uri.encodeFull(UiData.tokenRefresh), headers: headers);
     return await http
         .get(Uri.encodeFull(url), headers: headers)
         .then((response) {
@@ -58,15 +58,12 @@ class NetworkRequest {
       "Accept": "application/json"
     };
 
-    await http.get(Uri.encodeFull(UiData.tokenRefresh), headers: headers);
-    print('Post header is $headers');
-
     return await http
         .post(url, body: body, headers: headers, encoding: encoding)
         .then((http.Response response) {
       final String res = response.body;
-      print('server response $res');
       final int statusCode = response.statusCode;
+      print(res);
       if (statusCode < 200 || statusCode > 422 || json == null) {
         throw new Exception("Error while fetching data");
       }
@@ -123,7 +120,6 @@ class NetworkRequest {
         .then((http.Response response) {
       final dynamic res = response.body;
       final int statusCode = response.statusCode;
-
       if (statusCode < 200 || statusCode > 422 || json == null) {
         throw new Exception("Error while fetching data");
       }

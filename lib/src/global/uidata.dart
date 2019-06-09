@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
 class UiData {
-  static const String homeDomain = "http://localhost/vibespot/web";
-  static const String domain = "http://localhost/vibespot/api/a1";
+  //static const String homeDomain = "http://localhost/vibespot/web";
+  //static const String homeDomain = "http://192.168.8.101/vibespot/api/a1";
+  
+  //static const String homeDomain = "http://vibespot.akiba.ng/api/a1";
+  //static const String domain = "http://vibespot.akiba.ng/api/a1";
+
+  static const String homeDomain = "http://192.168.8.100/vibespot/api/a1";
+  static const String domain = "http://192.168.8.100/vibespot/api/a1";
+
+  //static const String domain = "http://10.0.2.2:8080/vibespot/api/a1";
   static const String webDomain = "$homeDomain";
 
   //Authentication Maintenance
@@ -18,12 +26,15 @@ class UiData {
   static const String signlesUploadInstruction = "/signlesUploadInstruction";
   static const String signlesUploadNumber = "/signlesUploadNumber";
   static const String signlesUpload = "/singlesUpload";
+  static const String albumUploadInstruction = "/albumUploadInstruction";
+  static const String albumCover = "/albumCover";
   static const String albumUpload = "/albumUpload";
   static const String myMusic = "/myMusic";
   static const String myPlaylist = "/myPlaylist";
   static const String myBalance = "/myBalance";
   static const String myStatistics = "/myStatistics";
   static const String help = "/help";/// This to be a link to FAQ on a website
+  static const String servicesHome = "/servicesHome";
   
 
   //strings
@@ -35,16 +46,19 @@ class UiData {
   //images
   static const String imageDir = "assets/images";
   static const String logo = "$imageDir/vibeStream-selected-icon.png";
+  static const String logoWhite = "$imageDir/vibeStream-white-icon.png";
   static const String splashImage = "$imageDir/splash.png";
   static const String userPlaceholder = "$imageDir/user-avatar.png";
   static const String comingSoon = "$imageDir/coming-soon.png";
 
   static List<Color> kitGradients = [
-    // new Color.fromRGBO(103, 218, 255, 1.0),
-    // new Color.fromRGBO(3, 169, 244, 1.0),
-    // new Color.fromRGBO(0, 122, 193, 1.0),
-    Color(0xFFcaaa3b),
-    Color(0xFFe8b91b),
+    //  Colors.orangeAccent,
+    //  new Color.fromRGBO(3, 169, 244, 1.0),
+    //  new Color.fromRGBO(0, 122, 193, 1.0),
+    
+    Color(0xFFD7816A),
+    Color(0xFFBD4F6C),
+    
   ];
 
 //Colors

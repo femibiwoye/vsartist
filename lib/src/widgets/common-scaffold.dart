@@ -15,7 +15,7 @@ class ScaffoldCommon extends StatelessWidget {
   final elevation;
   final backGroundColor;
   final showDrawer;
-  
+
   ScaffoldCommon(
       {this.appTitle,
       this.bodyData,
@@ -33,16 +33,18 @@ class ScaffoldCommon extends StatelessWidget {
         builder: (BuildContext context, ChangeThemeState state) {
           return Scaffold(
               key: scaffoldState,
-              appBar: new AppBar(
-                elevation: elevation,
-                leading: leading,
-                iconTheme: state.themeData.iconTheme,
-                title: Text(
-                  appTitle,
-                  style: state.themeData.textTheme.headline,
-                ),
-                backgroundColor: state.themeData.primaryColor,
-              ),
+              appBar: appTitle != null
+                  ? new AppBar(
+                      elevation: elevation,
+                      leading: leading,
+                      iconTheme: state.themeData.iconTheme,
+                      title: Text(
+                        appTitle,
+                        style: state.themeData.textTheme.headline,
+                      ),
+                      backgroundColor: state.themeData.primaryColor,
+                    )
+                  : null,
               drawer: showDrawer ? CommonDrawer() : null,
               backgroundColor: state.themeData.backgroundColor,
               body: bodyData,

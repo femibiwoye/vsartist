@@ -8,19 +8,23 @@ import 'package:vsartist/src/dashboard.dart';
 import 'package:vsartist/src/global/networks.dart';
 import 'package:vsartist/src/widgets/common-scaffold.dart';
 import 'package:vsartist/src/widgets/forms.dart';
+import './auth-bloc.dart';
 
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> implements LoginResponseScreen {
-  LoginRequest loginRequest;
+class _LoginState extends State<Login> {
+  //LoginRequest loginRequest;
   final scaffoldState = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   FormsWidget formsWidget = FormsWidget();
   String _username, _password;
-  bool _isLoading = false;
+
+  // _LoginState() {
+  //   loginRequest = new LoginRequest(this);
+  // }
 
   @override
   void initState() {
@@ -28,31 +32,21 @@ class _LoginState extends State<Login> implements LoginResponseScreen {
     checkInternet();
   }
 
-  _LoginState() {
-    loginRequest = new LoginRequest(this);
-  }
-
   checkInternet() async {
     if (await networkBloc.checkInternet() != null)
       _showSnackBar(await networkBloc.checkInternet());
   }
 
-  @override
-  void onLoginError(String errorTxt) {
-    print('Error is $errorTxt');
-    if (errorTxt != null) _showSnackBar(errorTxt);
-  }
-
   void vibestreamRedirect() {
     //Navigator.of(context).pushNamed(UiData.productsCategories);
-    Navigator.push(
+    Navigator.pushReplacement(
         context, new MaterialPageRoute(builder: (context) => new Dashboard()));
   }
 
   @override
   void onLoginSuccess(User user) async {
     print(user.name);
-    _showSnackBar('${user.username} successfully logged in');
+    _showSnackBar('Successfully logged in');
     Timer(new Duration(seconds: 2), vibestreamRedirect);
   }
 
@@ -70,21 +64,14 @@ class _LoginState extends State<Login> implements LoginResponseScreen {
   void _submit() async {
     final form = formKey.currentState;
     if (form.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
       form.save();
-      print('beofre do ogin $_username and $_password');
-      await new Future.delayed(const Duration(seconds: 1));
-      loginRequest.doLogin(_username, _password);
-
-      setState(() {
-        _isLoading = false;
+      authBloc.doLogin(_username, _password, context);
+      authBloc.snacksBar.listen((data) {
+        scaffoldState.currentState.showSnackBar(new SnackBar(
+            duration: Duration(seconds: 5), content: new Text(data)));
       });
     }
   }
-
-  
 
   Widget loginScaffold() => LoginProvider(
         child: ScaffoldCommon(
@@ -122,7 +109,7 @@ class _LoginState extends State<Login> implements LoginResponseScreen {
                   _usernameContainer(),
                   _passwordContainer(),
                   SizedBox(height: 20),
-                  loginButto(_submit),
+                  loginButto(),
                   forgotPassword(),
                   _registerNowLabel(),
                 ],
@@ -171,7 +158,8 @@ class _LoginState extends State<Login> implements LoginResponseScreen {
               style: TextStyle(color: UiData.orange, fontSize: 15),
             ),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(UiData.forgot_password);
+              Navigator.of(context)
+                  .pushReplacementNamed(UiData.forgot_password);
             }),
       ),
     );
@@ -191,16 +179,21 @@ class _LoginState extends State<Login> implements LoginResponseScreen {
     );
   }
 
-  loginButto(_submit) {
-    if (_isLoading) {
-      return new Center(child: CircularProgressIndicator());
-    } else {
-      return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: formsWidget.wideButton('LOGIN', context, _submit));
-    }
+  loginButto() {
+    return StreamBuilder<bool>(
+        stream: authBloc.showProgress,
+        initialData: false,
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.data) {
+            return new Center(child: CircularProgressIndicator());
+          } else {
+            return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: formsWidget.wideButton('LOGIN', context, _submit));
+          }
+        });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return loginScaffold();

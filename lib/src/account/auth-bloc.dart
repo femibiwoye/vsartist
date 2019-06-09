@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:vsartist/src/dashboard.dart';
 import './../global/networks.dart';
 import './user.dart';
 import './../global/uidata.dart';
@@ -24,6 +25,38 @@ class AuthBloc {
   // final _snackBar = StreamController<String>();
   // Stream<String> get snackBar => _snackBar.stream;
 
+
+doLogin(String username, String password, context) async {
+    _showProgress.add(true);
+    
+    var body = {"username": username, "password": password};
+    
+    return network
+        .guestPost(UiData.domain + "/artist-auth/login", body: body)
+        .then((dynamic response) {
+      response = response['data'];
+      var res = jsonDecode(response);
+      if (res["status"]) {
+        User user = User.map(res["body"]);
+        String userData = jsonEncode(res["body"]);
+        SharedData _pref = SharedData();
+        _pref.setisUserLogin(true);
+        _pref.setAuthToken(user.token);
+        _pref.setAuthUserData(userData);
+
+         Navigator.pushReplacement(
+        context, new MaterialPageRoute(builder: (context) => new Dashboard()));
+        
+      } else {
+       snackBar.add('${res["body"]["password"][0]}');
+          _showProgress.add(false);
+          return;
+      }
+      
+    });
+  }
+
+
   register(SignupForm signup,context) async {
     _showProgress.add(true);
     Map<dynamic, dynamic> body = {
@@ -39,17 +72,10 @@ class AuthBloc {
     return network
         .guestPost(UiData.domain + "/artist-auth/signup", body: body)
         .then((res) {
-      print('Server response is $res and ${res['data']}');
       String data = res['data'];
       var response = jsonDecode(data);
 
       if (res['statusCode'] == 200) {
-        print('everything went well');
-        print('This is the body: ${response}');
-        //Hide keyboard
-        //FocusScope.of(context).requestFocus(new FocusNode());
-
-        //Login the current user after successful login
         snackBar.add('Account Successfuly created');
         //var userData = jsonEncode(response);
         User user = User.map(response);

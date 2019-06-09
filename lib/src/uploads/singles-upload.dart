@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:vsartist/src/global/functions.dart';
 import 'package:vsartist/src/global/uidata.dart';
 import 'package:vsartist/src/widgets/forms.dart';
 import 'package:vsartist/src/widgets/common-scaffold.dart';
@@ -37,46 +40,24 @@ class _SinglesUploadState extends State<SinglesUpload>
   final scaffoldState = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   Music musicUpload = new Music();
+  Functions functions = Functions();
   UploadSingles uploadSingles;
 
   File _image;
-  String progressTitle;
+  //String progressTitle;
   String _filePath;
   List _states = [], _cities = [], _allCities;
+  // static const MethodChannel _channel = const MethodChannel('music_finder');
+  // TimeChangeHandler durationHandler;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    checkInternet();
+
+    functions.checkInternet(scaffoldState);
     loadStates();
     uploadSingles = widget.uploadSingles;
-    print('Music array is here ${uploadSingles.releaseName}');
-
-    // controller = AnimationController(
-    //     duration: const Duration(milliseconds: 2000), vsync: this);
-    // animation = Tween(begin: 0.0, end: 1.0).animate(controller)
-    //   ..addListener(() {
-    //     setState(() {
-    //       // the state that has changed here is the animation object’s value
-    //     });
-    //   });
-    // controller.repeat();
-  }
-
-  checkInternet() async {
-    if (await networkBloc.checkInternet() != null) {
-      showSnack(await networkBloc.checkInternet());
-    }
-  }
-
-  showSnack(data) {
-    if (data != null) {
-      scaffoldState.currentState.showSnackBar(new SnackBar(
-          duration: Duration(seconds: 5),
-          content: new Text(data.toString()),
-          backgroundColor: UiData.orange));
-    }
   }
 
   Future<String> loadStates() async {
@@ -93,8 +74,6 @@ class _SinglesUploadState extends State<SinglesUpload>
 
   _selectGalleryImage() async {
     var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    print('image path is $imageFile');
-
     setState(() {
       _image = imageFile;
       // String base64Image = base64Encode(_image.readAsBytesSync());
@@ -102,20 +81,18 @@ class _SinglesUploadState extends State<SinglesUpload>
       //musicUpload.image =
       //  'data:image/${extension.replaceAll('.', '')};base64,$base64Image';
       musicUpload.image = _image.path;
-      print('the image is ${musicUpload.image}');
     });
   }
 
   void _getFilePath() async {
     try {
-      String filePath = await FilePicker.getFilePath(type: FileType.IMAGE);
+      String filePath = await FilePicker.getFilePath(type: FileType.AUDIO);
       if (filePath == '') {
         return;
       }
       print("File path: " + filePath);
       setState(() {
         this._filePath = filePath;
-        print('path is $filePath');
         musicUpload.song = filePath;
       });
     } on PlatformException catch (e) {
@@ -123,29 +100,12 @@ class _SinglesUploadState extends State<SinglesUpload>
     }
   }
 
-  List<Map<String, dynamic>> _genres = [
-    {'value': 'pop', 'title': 'Pop'},
-    {'value': 'rap', 'title': 'Rap'},
-    {'value': 'blues', 'title': 'Blues'},
-  ];
   var streamNumber = [
-    '2 ',
-    '3 ',
+    '2',
+    '3',
     '4',
     '5',
   ];
-
-  genres() {
-    return _genres.map((item) {
-      return new DropdownMenuItem<String>(
-        child: new Text(
-          item['title'],
-          style: TextStyle(color: Colors.grey),
-        ),
-        value: item['value'].toString(),
-      );
-    }).toList();
-  }
 
   states() {
     return _states.map((item) {
@@ -201,14 +161,13 @@ class _SinglesUploadState extends State<SinglesUpload>
   onChangeGenre(value) {
     setState(() {
       musicUpload.genre = value;
-      print('the selected is ${musicUpload.genre}');
     });
   }
 
   onChangeStream(value) {
     setState(() {
       musicUpload.stream = value;
-      print('the selected is ${musicUpload.stream}');
+      print('Stream is ${musicUpload.stream}');
     });
   }
 
@@ -329,92 +288,82 @@ class _SinglesUploadState extends State<SinglesUpload>
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 20),
                     child: (index < count)
-                        ? formsWidget.wideButton('NEXT', context, _submit)
-                        : formsWidget.wideButton('UPLOAD', context, _submit));
+                        ? formsWidget.wideButton('NEXT 1', context, _submit)
+                        : formsWidget.wideButton('UPLOAD 1', context, _submit));
               } else {
                 return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 20),
                     child: (index < count)
-                        ? formsWidget.wideButton('NEXT', context, _submit)
-                        : formsWidget.wideButton('UPLOAD', context, _submit));
+                        ? formsWidget.wideButton('NEXT 2', context, _submit)
+                        : formsWidget.wideButton('UPLOAD 2', context, _submit));
               }
             }),
       );
 
-  _submit() async{
+  _submit() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
 
       if (musicUpload.image == null) {
-        showSnack('Track banner cannot be empty');
+        functions.showSnack('Track banner cannot be empty', scaffoldState);
         return;
       }
       if (musicUpload.genre == null) {
-        showSnack('Genre cannot be empty');
+        functions.showSnack('Genre cannot be empty', scaffoldState);
         return;
       }
 
       if (musicUpload.vibe_state == null) {
-        showSnack('Vibe state cannot be empty');
+        functions.showSnack('Vibe state cannot be empty', scaffoldState);
         return;
       }
       if (musicUpload.push_state == null) {
-        showSnack('Push state cannot be empty');
+        functions.showSnack('Push state cannot be empty', scaffoldState);
         return;
       }
       if (musicUpload.push_city == null) {
-        showSnack('Push city cannot be empty');
+        functions.showSnack('Push city cannot be empty', scaffoldState);
         return;
       }
       if (musicUpload.stream == null) {
-        showSnack('Stream cannot be empty');
+        functions.showSnack('Stream cannot be empty', scaffoldState);
         return;
       }
       if (musicUpload.song == null) {
-        showSnack('Track file cannot be empty');
+        functions.showSnack('Track file cannot be empty', scaffoldState);
         return;
       }
-
-      print('gotten here');
 
       musicUpload.release_date = uploadSingles.releaseDate.toString();
       musicUpload.releaseName = uploadSingles.releaseName;
 
       uploadSingles.tracks[widget.page] = musicUpload;
-      print('This is data ${uploadSingles.tracks[widget.page].title}');
-      print('This is inputted data ${musicUpload.toJson(musicUpload)}');
       if (widget.page + 1 < widget.pages) {
         uploadCommon.singleUploadPage(context, widget.pages, widget.page + 1,
             uploadSingles.releaseName, uploadSingles);
       } else {
-        //for (final track in uploadSingles.tracks) {
-        for (var i=0; i<widget.pages; i++) {
-          print(' the loop is $i');
-          print('Tracks title are ${uploadSingles.tracks[i].toJson(uploadSingles.tracks[i])}');
-          
-          convertImage(uploadSingles.tracks[i].image,i);
-          setState(() {
-            progressTitle = uploadSingles.tracks[i].title;
-          });
-           uploadBloc.uploadSongs(uploadSingles.tracks[i]);
-           formsWidget.delayTime(8);
-        //   //uploadBloc.dispose();
-        //  return; 
+        for (var i = 0; i < widget.pages; i++) {
+          convertImage(uploadSingles.tracks[i].image, i);
         }
-        print('Button return back to us');
+        print('about uploading songs');
+        uploadBloc.uploadSongs(uploadSingles, context);
+
         uploadBloc.snacksBar.listen((data) async {
           if (data != null) {
-            showSnack(data);
+            functions.showSnack(data, scaffoldState);
+            formsWidget.delayTime(4);
+            // if (data.contains('track uploaded')) {
+
+            // }
           }
         });
       }
     }
   }
 
-
-  void convertImage(image,index) {
-    print('image ebtered again $image');
+  void convertImage(image, index) {
+    //print('image ebtered again $image');
     if (image == null || image.contains(';')) return;
     image = File(image);
     String base64Image = base64Encode(image.readAsBytesSync());
@@ -422,29 +371,8 @@ class _SinglesUploadState extends State<SinglesUpload>
     extension.replaceAll('.', '');
     setState(() {
       uploadSingles.tracks[index].image = '$extension;$base64Image';
-      print('This is after convertion to base64 ${musicUpload.image}');
+      //print('This is after convertion to base64 ${musicUpload.image}');
     });
-    
-  }
-
-  Widget progressIndicator() {
-    return StreamBuilder<List>(
-        stream: networkBloc.sendProgress,
-        builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-          if (snapshot.data == null) {
-            return new Container();
-          } else {
-            double percent = (snapshot.data[0] / snapshot.data[1]) * 1;
-            int percentProgress = (percent * 100).round();
-            print('percentProgress is $percentProgress');
-            print('percent is $percent');
-            return Column(children: [
-              Text(progressTitle ?? '', style: TextStyle(color: Colors.white)),
-              formsWidget.linearProgressBar(percent)
-            ]); //Text('${percentProgress.toString()}% - $percent', style:TextStyle(color:Colors.white));//
-
-          }
-        });
   }
 
   forms() => Container(
@@ -477,8 +405,11 @@ class _SinglesUploadState extends State<SinglesUpload>
                                   'Track Description', onSavedTrackDescription,
                                   lines: 3),
                               formsWidget.fieldSpace(),
-                              formsWidget.dropdownField('Genre', genres(),
-                                  musicUpload.genre, onChangeGenre,
+                              formsWidget.dropdownField(
+                                  'Genre',
+                                  functions.genres(),
+                                  musicUpload.genre,
+                                  onChangeGenre,
                                   label: 'Genre'),
                               formsWidget.sectionHeader('Track file'),
                               formsWidget.fieldSpace(),
@@ -517,7 +448,8 @@ class _SinglesUploadState extends State<SinglesUpload>
                                   onChangeStream,
                                   label: 'Number of stream'),
                               formsWidget.fieldSpace(),
-                              progressIndicator(),
+                              functions
+                                  .progressIndicator(networkBloc.sendProgress),
                               submitButton(widget.page + 1, widget.pages),
                             ],
                           ),

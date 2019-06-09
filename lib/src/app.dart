@@ -9,12 +9,12 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     // TODO: implement build
     return MaterialApp(
-        title: UiData.appName,
+      title: UiData.appName,
       debugShowCheckedModeBanner: false,
       home: new SplashPage(),
       routes: routes,
@@ -26,6 +26,6 @@ class App extends StatelessWidget {
                 message: "Under Development",
                 iconColor: UiData.orange,
               )),
-      );
+    );
   }
 }

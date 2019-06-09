@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:vsartist/src/global/uidata.dart';
+import 'package:path/path.dart' as path;
 
 class FormsWidget {
   formDecoration(title, {icon}) {
@@ -139,6 +140,99 @@ class FormsWidget {
     );
   }
 
+  Widget imageInput(title,image,pressAction) {
+    return Card(
+      color: Colors.grey.shade700,
+      child: new SizedBox(
+        child: Center(
+          child: Column(children: [
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: image == null
+                  ? Text('No Image Selected',
+                      style: TextStyle(color: Colors.white))
+                  : Image.file(image),
+            ),
+            RawMaterialButton(
+              fillColor: Colors.black,
+              splashColor: Colors.orange.shade700,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 12.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(
+                      Icons.image,
+                      color: Colors.orange.shade700,
+                    ),
+                    SizedBox(width: 8.0),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.orange.shade700,
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: pressAction,
+              shape: const StadiumBorder(),
+            ),
+            SizedBox(height: 10)
+          ]),
+        ),
+      ),
+    );
+  }
+
+  Widget uploadFile(filePath,_getFilePath) {
+    return Card(
+      color: Colors.grey.shade700,
+      child: new SizedBox(
+        height: 90.0,
+        child: Center(
+            child: Column(children: [
+          Padding(
+              padding: EdgeInsets.all(7),
+              child: Text(
+                  filePath != null
+                      ? path.basename(filePath)
+                      : 'Audio file not selected',
+                  style: TextStyle(color: Colors.white))),
+          RawMaterialButton(
+            fillColor: Colors.black,
+            splashColor: Colors.orange.shade700,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.audiotrack,
+                    color: Colors.orange.shade700,
+                  ),
+                  SizedBox(width: 8.0),
+                  Text(
+                    "UPLOAD TRACK",
+                    style: TextStyle(
+                      color: Colors.orange.shade700,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            onPressed: _getFilePath,
+            shape: const StadiumBorder(),
+          ),
+        ])),
+      ),
+    );
+  }
+
   Widget formLabel(label) {
     return Text(label,
         style: TextStyle(
@@ -161,8 +255,9 @@ class FormsWidget {
       ),
     );
   }
+  
 
-  Widget sectionHeader(title) {
+  Widget sectionHeader(title,{position:TextAlign.left}) {
     return Padding(
       padding: EdgeInsets.only(left: 10, top: 30),
       child: new Text(
@@ -172,7 +267,7 @@ class FormsWidget {
           fontFamily: 'Poppins-Bold',
           fontSize: 20.0,
         ),
-        textAlign: TextAlign.left,
+        textAlign: position,
       ),
     );
   }
@@ -200,6 +295,35 @@ class FormsWidget {
                 color: Colors.white70,
               ))
         ]));
+  }
+
+  Widget sectionH3(title,{position:TextAlign.left}) {
+    return Padding(
+      padding: EdgeInsets.only(left: 10, top: 30),
+      child: new Text(
+        title,
+        style: new TextStyle(
+          color: Colors.orange.shade700,
+          fontFamily: 'Poppins-Bold',
+          fontSize: 25.0,
+        ),
+        textAlign: position,
+      ),
+    );
+  }
+  Widget sectionBody(content,{position:TextAlign.left}) {
+    return Padding(
+        padding: EdgeInsets.only(left: 24.0, right: 24.0),
+        child: new Text(
+          content,
+          style: new TextStyle(
+            color: Colors.white,
+            fontFamily: 'Poppins',
+            fontSize: 14.0,
+          ),
+          textAlign: position,
+        ),
+      );
   }
 
   Widget wideButton(title, context, _continue) {

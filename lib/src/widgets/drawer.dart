@@ -175,9 +175,19 @@ class _CommonDrawerState extends State<CommonDrawer> {
                                     drawerList('Home',
                                         url: UiData.dashboard,
                                         theme: state.themeData),
-                                    Divider(height: 40),
+                                    
+                                    drawerList('Wallet',
+                                        url: UiData.myBalance,
+                                        theme: state.themeData),
+                                    
                                     drawerList('Upload Singles',
                                         url: UiData.signlesUploadInstruction,
+                                        theme: state.themeData),
+                                        drawerList('My Music',
+                                        url: UiData.myMusic,
+                                        theme: state.themeData),
+                                        drawerList('Services',
+                                        url: UiData.servicesHome,
                                         theme: state.themeData),
                                     Divider(height: 40),
                                     ListTile(
