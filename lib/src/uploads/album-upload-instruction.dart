@@ -69,7 +69,7 @@ class AlbumUploadInstruction extends StatelessWidget {
         );
 
     return ScaffoldCommon(
-      appTitle: 'Song upload guide',
+      appTitle: 'Album upload guide',
       bodyData: body(),
       showDrawer: false,
     );

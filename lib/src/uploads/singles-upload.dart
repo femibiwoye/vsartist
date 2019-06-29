@@ -283,20 +283,20 @@ class _SinglesUploadState extends State<SinglesUpload>
             initialData: false,
             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.data) {
-                //return new Center(child: CircularProgressIndicator());
-                return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 20),
-                    child: (index < count)
-                        ? formsWidget.wideButton('NEXT 1', context, _submit)
-                        : formsWidget.wideButton('UPLOAD 1', context, _submit));
+                return new Center(child: CircularProgressIndicator());
+                // return Padding(
+                //     padding: const EdgeInsets.symmetric(
+                //         horizontal: 8.0, vertical: 20),
+                //     child: (index < count)
+                //         ? formsWidget.wideButton('NEXT', context, _submit)
+                //         : formsWidget.wideButton('UPLOAD', context, _submit));
               } else {
                 return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 20),
                     child: (index < count)
-                        ? formsWidget.wideButton('NEXT 2', context, _submit)
-                        : formsWidget.wideButton('UPLOAD 2', context, _submit));
+                        ? formsWidget.wideButton('NEXT', context, _submit)
+                        : formsWidget.wideButton('UPLOAD', context, _submit));
               }
             }),
       );
@@ -315,7 +315,7 @@ class _SinglesUploadState extends State<SinglesUpload>
       }
 
       if (musicUpload.vibe_state == null) {
-        functions.showSnack('Vibe state cannot be empty', scaffoldState);
+        functions.showSnack('State vibes cannot be empty', scaffoldState);
         return;
       }
       if (musicUpload.push_state == null) {
@@ -346,7 +346,6 @@ class _SinglesUploadState extends State<SinglesUpload>
         for (var i = 0; i < widget.pages; i++) {
           convertImage(uploadSingles.tracks[i].image, i);
         }
-        print('about uploading songs');
         uploadBloc.uploadSongs(uploadSingles, context);
 
         uploadBloc.snacksBar.listen((data) async {
@@ -414,16 +413,18 @@ class _SinglesUploadState extends State<SinglesUpload>
                               formsWidget.sectionHeader('Track file'),
                               formsWidget.fieldSpace(),
                               uploadTrack(),
-                              formsWidget.sectionHeader('Vibe Location'),
+                              formsWidget.sectionHeaderTooltip('State Vibes',
+                                  'State vibe features a top Music per state.'),
                               formsWidget.fieldSpace(),
                               formsWidget.dropdownField(
-                                  'Select Vibe State',
+                                  'Select State Vibes',
                                   states(),
                                   musicUpload.vibe_state,
                                   vibeStateOnChange,
                                   label: 'State'),
-                              formsWidget
-                                  .sectionHeader('Delivery/Push Locations'),
+                              formsWidget.sectionHeaderTooltip(
+                                  'Delivery/Push Locations',
+                                  'Push your songs to individuals in the location.'),
                               formsWidget.fieldSpace(),
                               formsWidget.dropdownField(
                                   'Select Push State',
@@ -439,7 +440,7 @@ class _SinglesUploadState extends State<SinglesUpload>
                                   pushCityOnChange,
                                   label: 'Cities'),
                               formsWidget.sectionHeaderTooltip('Stream Count',
-                                  'Number of times user can stream before they are required to pay in order to stream more'),
+                                  'The number of times your song will be available for stream before download. Fans will be paid for each stream.'),
                               formsWidget.fieldSpace(),
                               formsWidget.dropdownField(
                                   'Number of tracks',

@@ -25,6 +25,7 @@ class UserLogin {
 
 
 class SignupForm {
+  String stage_name;
   String username;
   String email;
   String phone;
@@ -35,6 +36,7 @@ class SignupForm {
 
   SignupForm(
       {this.username,
+      this.stage_name,
       this.email,
       this.phone,
       this.state,
@@ -45,6 +47,7 @@ class SignupForm {
 
   factory SignupForm.fromJson(Map<String, dynamic> json) {
     return SignupForm(
+      stage_name: json['stage_name'],
       username: json['username'],
       email: json['email'],
       phone: json['phone'],

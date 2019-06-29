@@ -536,7 +536,7 @@ class _MusicHomeState extends State<MusicHome> {
   _detailItemsFor(Section section) {
     
     if (section.keyword == 'release') {
-      musicBloc.getRelease();
+      musicBloc.getRelease(context);
       return StreamBuilder(
       stream: musicBloc.allRelease,
       builder: (context, AsyncSnapshot<List<ReleaseSingle>> snapshot) {
@@ -551,7 +551,7 @@ class _MusicHomeState extends State<MusicHome> {
       },
     );
     }else if (section.keyword == 'album') {
-      musicBloc.getAlbum();
+      musicBloc.getAlbum(context);
       return StreamBuilder(
       stream: musicBloc.allAlbum,
       builder: (context, AsyncSnapshot<List<UploadAlbumDetails>> snapshot) {
@@ -565,8 +565,23 @@ class _MusicHomeState extends State<MusicHome> {
         );
       },
     );
+    }else if (section.keyword == 'unpublish') {
+      musicBloc.getUnpublish(context);
+      return StreamBuilder(
+      stream: musicBloc.allUnpublish,
+      builder: (context, AsyncSnapshot<List> snapshot) {
+        if (snapshot.hasData) {
+          return musicFunctions.buildUnpublish(snapshot.data);
+        } else if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        return Center(child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(UiData.orange)),
+        );
+      },
+    );
     } else {
-      musicBloc.getSongs();
+      musicBloc.getSongs(context);
       return StreamBuilder(
       stream: musicBloc.allSongs,
       builder: (context, AsyncSnapshot<List<Music>> snapshot) {

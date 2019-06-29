@@ -17,7 +17,7 @@ class _WalletBalanceState extends State<WalletBalance> {
   @override
   void initState() {
     super.initState();
-    walletBloc.getBalance();
+    walletBloc.getBalance(context);
     walletBloc.getHistory();
   }
 

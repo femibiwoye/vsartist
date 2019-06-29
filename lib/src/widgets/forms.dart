@@ -313,13 +313,13 @@ class FormsWidget {
   }
   Widget sectionBody(content,{position:TextAlign.left}) {
     return Padding(
-        padding: EdgeInsets.only(left: 24.0, right: 24.0),
+        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 24),
         child: new Text(
           content,
           style: new TextStyle(
             color: Colors.white,
             fontFamily: 'Poppins',
-            fontSize: 14.0,
+            fontSize: 15.0,
           ),
           textAlign: position,
         ),

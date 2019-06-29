@@ -143,7 +143,6 @@ class _AlbumUploadState extends State<AlbumUpload>
     extension.replaceAll('.', '');
     setState(() {
       uploadAlbum.image = '$extension;$base64Image';
-      print('Image is ${uploadAlbum.image}');
     });
   }
 

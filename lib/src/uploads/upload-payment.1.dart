@@ -13,7 +13,6 @@ import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:vsartist/src/global/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vsartist/src/global/networks.dart';
-import 'package:toast/toast.dart';
 
 class UploadPayment extends StatefulWidget {
   final int id;
@@ -45,11 +44,11 @@ class _UploadPaymentState extends State<UploadPayment> {
   void initState() {
     super.initState();
     loadPage();
-    PaystackPlugin.initialize(publicKey: UiData.paymentKey);
   }
 
   loadPage() {
     paymentBloc.fetchPaymentDetails(widget.id, widget.type);
+    PaystackPlugin.initialize(publicKey: UiData.paymentKey);
   }
 
   inputPay() => Container(
@@ -96,6 +95,7 @@ class _UploadPaymentState extends State<UploadPayment> {
                               return val.length < 16
                                   ? "Minimum character is 16"
                                   : null;
+                                  
                             },
                             maxLength: 16,
                             decoration: formsWidget
@@ -113,7 +113,7 @@ class _UploadPaymentState extends State<UploadPayment> {
                         child: formsWidget.wideButton(
                             'Pay Now ${NumberFormat.currency(decimalDigits: 2, symbol: '').format(double.tryParse(paymentDetails.amountExpected))}',
                             context,
-                            () {})),
+                            _startAfreshCharge)),
                     Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: Row(
@@ -235,6 +235,159 @@ class _UploadPaymentState extends State<UploadPayment> {
         ));
   }
 
+  PaymentCard _getCardFromUI() {
+    // Using just the must-required parameters.
+    print(cardDetails.cardNumber);
+    print(cardDetails.cvv);
+    print(cardDetails.expiryMonth);
+    print(cardDetails.expiryYear);
+    return PaymentCard(
+      number: cardDetails.cardNumber,
+      cvc: cardDetails.cvv,
+      expiryMonth: cardDetails.expiryMonth,
+      expiryYear: cardDetails.expiryYear,
+    );
+
+    // Using Cascade notation (similar to Java's builder pattern)
+//    return PaymentCard(
+//        number: cardNumber,
+//        cvc: cvv,
+//        expiryMonth: expiryMonth,
+//        expiryYear: expiryYear)
+//      ..name = 'Segun Chukwuma Adamu'
+//      ..country = 'Nigeria'
+//      ..addressLine1 = 'Ikeja, Lagos'
+//      ..addressPostalCode = '100001';
+
+    // Using optional parameters
+//    return PaymentCard(
+//        number: cardNumber,
+//        cvc: cvv,
+//        expiryMonth: expiryMonth,
+//        expiryYear: expiryYear,
+//        name: 'Ismail Adebola Emeka',
+//        addressCountry: 'Nigeria',
+//        addressLine1: '90, Nnebisi Road, Asaba, Deleta State');
+  }
+
+  String _getReference() {
+    String platform;
+    if (Platform.isIOS) {
+      platform = 'iOS';
+    } else {
+      platform = 'Android';
+    }
+
+    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
+  }
+
+  _startAfreshCharge() async {
+    _formKey.currentState.save();
+
+    print(paymentDetails.amountExpected.replaceAll('.', ''));
+
+    Charge charge = Charge()
+      ..amount = int.tryParse(paymentDetails.amountExpected.replaceAll('.', ''))
+      ..email = paymentDetails.email
+      ..reference
+      ..card = _getCardFromUI();
+
+    // if (_isLocal()) {
+    //   // Set transaction params directly in app (note that these params
+    //   // are only used if an access_code is not set. In debug mode,
+    //   // setting them after setting an access code would throw an exception
+    //   // 1 NGN = 100Kobo
+    //   // x NGN  = 2000
+    //   charge
+    //     ..amount = 10000
+    //     ..email = 'customer@email.com'
+    //     ..reference = _getReference()
+    //     ..putCustomField('Charged From', 'Flutter SDK');
+    //   _chargeCard(charge);
+    // } else {
+    // Perform transaction/initialize on Paystack server to get an access code
+    // documentation: https://developers.paystack.co/reference#initialize-a-transaction
+    charge.accessCode =await _fetchAccessCodeFrmServer();
+    print('server code is ${charge.accessCode}');
+    _chargeCard(charge);
+    // }
+  }
+
+  _chargeCard(Charge charge) {
+    // This is called only before requesting OTP
+    // Save reference so you may send to server if error occurs with OTP
+    handleBeforeValidate(Transaction transaction) {
+      _updateStatus(transaction.reference, 'validating...');
+    }
+
+    handleOnError(Object e, Transaction transaction) {
+      // If an access code has expired, simply ask your server for a new one
+      // and restart the charge instead of displaying error
+      print(e);
+      if (e is ExpiredAccessCodeException) {
+        _startAfreshCharge();
+        _chargeCard(charge);
+        return;
+      }
+
+      if (transaction.reference != null) {
+        _verifyOnServer(transaction.reference, 'error');
+      } else {
+        _updateStatus(transaction.reference, e.toString());
+      }
+    }
+
+    // This is called only after transaction is successful
+    handleOnSuccess(Transaction transaction) {
+      print('This is the message from paystack ${transaction.message}');
+      _verifyOnServer(transaction.reference, 'success');
+    }
+
+    PaystackPlugin.chargeCard(context,
+        charge: charge,
+        beforeValidate: (transaction) => handleBeforeValidate(transaction),
+        onSuccess: (transaction) => handleOnSuccess(transaction),
+        onError: (error, transaction) => handleOnError(error, transaction));
+  }
+
+  void _verifyOnServer(String reference, message) async {
+    _updateStatus(reference, 'Verifying...');
+    print('dd1');
+    try {
+      String platform;
+      if (Platform.isIOS) {
+        platform = 'iOS';
+      } else {
+        platform = 'Android';
+      }
+      print('dd2');
+      
+      String parsed = await network.get(Uri.encodeFull(UiData.domain +
+          "/payment/update-payment?id=${widget.id}&type=${widget.type}&ref=$reference&message=$message&source=$platform&option=paystack_card"));
+
+      print('dd3');
+      print(parsed);
+      print('dd4');
+      var response = jsonDecode(parsed);
+      if (response["status"] == false) {
+        print('dd5');
+        _updateStatus(reference, response['data']);
+        return;
+      }
+      print('dd6');
+      _updateStatus(reference, 'Successful');
+      print('dd7');
+      Navigator.pop(context);
+      loadPage();
+      print('dd8');
+    } catch (e) {
+      _updateStatus(
+          reference,
+          'There was a problem verifying %s on the backend: '
+          '$reference $e');
+    }
+  }
+
   _updateStatus(String reference, String message) {
     _showMessage('Reference: $reference \n\ Response: $message',
         const Duration(seconds: 7));
@@ -256,13 +409,16 @@ class _UploadPaymentState extends State<UploadPayment> {
     try {
       String parsed = await network.get(Uri.encodeFull(UiData.domain +
           "/payment/new-payment-code?id=${widget.id}&type=${widget.type}"));
+      print('code from ftch new $parsed');
       var response = jsonDecode(parsed);
       if (response["status"] == false) {
         throw new Exception("Error while fetching data");
       }
+      print(response['data']);
 
       accessCode = response[
           'data']; //paymentBloc.fetchNewPayCode(widget.id, widget.type);
+      print('Response for access code = ${response['data']}');
     } catch (e) {
       _updateStatus(
           'reference',
@@ -331,104 +487,12 @@ class _UploadPaymentState extends State<UploadPayment> {
   }
 
   nextButton() {
-    _continue();
-  }
-
-  Future<dynamic> initiatePayment() async {
-    String parsed = await network.get(Uri.encodeFull(UiData.domain +
-        "/payment/new-payment-code?id=${widget.id}&type=${widget.type}"));
-
-    return parsed;
-  }
-
-  Future<CheckoutResponse> getResponse(Charge charge) async {
-    print(
-        'card payment details ${charge.accessCode} ${charge.amount} ${charge.email} ${charge.reference} ${charge.bearer} ${charge.card}');
-    CheckoutResponse response = await PaystackPlugin.checkout(
-      context,
-      method: CheckoutMethod.card,
-      // Defaults to CheckoutMethod.selectable
-      charge: charge,
-    );
-    print(
-        'card resp is ${response.message} ${response.method} ${response.card} ${response.account}');
-    return response;
-  }
-
-  void _continue() {
-    Future<dynamic> post = initiatePayment();
-    post.then((dynamics) {
-      var json = jsonDecode(dynamics);
-      if (!json.isEmpty) {
-        if (json['status'] == true && json['data'] != 'Paid') {
-          Charge charge = Charge()
-            ..amount =
-                int.tryParse(paymentDetails.amountExpected.replaceAll('.', ''))
-            //..accessCode = json['data']
-            ..reference = json['data']
-            ..email = paymentDetails.email
-            ..putCustomField('purchase', widget.type)
-            ..putCustomField('purchase_id', widget.id.toString());
-
-          Future<CheckoutResponse> responseObj = getResponse(charge);
-          responseObj.then((onValue) {
-            Future<dynamic> verifyObj =
-                _verifyOnServer(onValue.reference, onValue.message);
-            verifyObj.then((dynamicsv) {
-              var json = jsonDecode(dynamicsv);
-              if (!json.isEmpty) {
-                if (json['status']) {
-                  Toast.show(json['data'], context,
-                      duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-                  loadPage();
-                  Navigator.pop(context);
-                } else {
-                  Toast.show('Error occured', context,
-                      duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-                }
-              }
-            });
-          });
-        } else {
-          Toast.show(json['proceed'], context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        }
-      }
-    });
-  }
-
-  _verifyOnServer(String reference, message) async {
-    _updateStatus(reference, 'Verifying...');
-    try {
-      String platform;
-      if (Platform.isIOS) {
-        platform = 'iOS';
-      } else {
-        platform = 'Android';
-      }
-print(Uri.encodeFull(UiData.domain +
-          "/payment/update-payment?id=${widget.id}&type=${widget.type}&ref=$reference&message=$message&source=$platform&option=paystack_card"));
-      String parsed = await network.get(Uri.encodeFull(UiData.domain +
-          "/payment/update-payment?id=${widget.id}&type=${widget.type}&ref=$reference&message=$message&source=$platform&option=paystack_card"));
-
-      var response = jsonDecode(parsed);
-      if (response["status"] == false) {
-        _updateStatus(reference, response['data']);
-        return parsed;
-      }
-      _updateStatus(reference, 'Successful');
-      loadPage();
-      return parsed;
-    } catch (e) {
-      _updateStatus(
-          reference,
-          'There was a problem verifying %s on the backend: '
-          '$reference $e');
-    }
+    globalFunctions.goToDialog(context, inputPay());
   }
 
   viewStatus() {
     globalFunctions.openPaymentStatus(context, widget, _done);
+    //FetchPaymentReceipt(done: _done, id: widget.id,type: widget.type);
   }
 
   onSave(newValue) => setState(() {});
@@ -438,9 +502,10 @@ print(Uri.encodeFull(UiData.domain +
     return ScaffoldCommon(
       scaffoldState: scaffoldState,
       appTitle:
-          '${widget.type == 'album' ? 'Album' : 'Tracks'} Release Payment',
+          '${widget.type == 'album' ? 'Album ' : 'Tracks '}Release Payment',
       bodyData: body(),
-      showDrawer: widget.isDrawer,
+      showDrawer:
+          widget.isDrawer == null || widget.isDrawer == false ? false : true,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
@@ -24,26 +25,37 @@ class NetworkRequest {
   getTokken() async {
     SharedData _pref = SharedData();
     if (await _pref.getisUserLogin() == true) {
+      print(await _pref.getAuthToken());
       return token = await _pref.getAuthToken();
     } else {
       return token = null;
     }
   }
 
-  Future<String> get(String url) async {
+  authLogout(statusCode, context) {
+    SharedData _pref = SharedData();
+    if (context != null && statusCode == 401) {
+      _pref.disposeLogin();
+      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacementNamed(UiData.login);
+    }
+  }
+
+  Future<String> get(String url, {context}) async {
     token = await getTokken();
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $token",
       "Accept": "application/json"
     };
 
-    print('Get token is $token');
-    //await http.get(Uri.encodeFull(UiData.tokenRefresh), headers: headers);
     return await http
         .get(Uri.encodeFull(url), headers: headers)
         .then((response) {
       final String res = response.body;
       final int statusCode = response.statusCode;
+      print(res);
+      print(statusCode);
+      authLogout(statusCode, context);
       if (statusCode < 200 || statusCode > 422 || json == null) {
         throw new Exception("Error while fetching data");
       }
@@ -51,7 +63,8 @@ class NetworkRequest {
     });
   }
 
-  Future<String> post(String url, {Map headers, body, encoding}) async {
+  Future<String> post(String url,
+      {Map headers, body, encoding, context}) async {
     token = await getTokken();
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $token",
@@ -63,7 +76,9 @@ class NetworkRequest {
         .then((http.Response response) {
       final String res = response.body;
       final int statusCode = response.statusCode;
-      print(res);
+      authLogout(statusCode, context);
+      print('post: $statusCode');
+      print('post: $res');
       if (statusCode < 200 || statusCode > 422 || json == null) {
         throw new Exception("Error while fetching data");
       }
@@ -72,7 +87,7 @@ class NetworkRequest {
   }
 
   Future<dynamic> postWithFile(String url,
-      {Map headers, body, encoding}) async {
+      {Map headers, body, encoding, context}) async {
     token = await getTokken();
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $token",
@@ -90,9 +105,11 @@ class NetworkRequest {
         options: new Options(
             contentType: ContentType.parse("application/json"))).then(
         (response) {
-
       final dynamic res = response;
       final int statusCode = response.statusCode;
+      print('Network response: $statusCode');
+      print('Network response: $res');
+      authLogout(statusCode, context);
       if (statusCode < 200 || statusCode > 422 || json == null) {
         throw new Exception("Error while fetching data");
       }
@@ -119,6 +136,7 @@ class NetworkRequest {
         .post(url, body: body, headers: headers, encoding: encoding)
         .then((http.Response response) {
       final dynamic res = response.body;
+      //print(res);
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 422 || json == null) {
         throw new Exception("Error while fetching data");

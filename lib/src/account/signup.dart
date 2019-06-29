@@ -89,7 +89,6 @@ class _SignupState extends State<Signup> {
   signupFields() => Container(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          //mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             new Form(
               key: formKey,
@@ -98,14 +97,27 @@ class _SignupState extends State<Signup> {
                   new Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: new TextFormField(
+                        onSaved: (val) => signup.stage_name = val,
+                        style: TextStyle(color: Colors.black),
+                        validator: (val) {
+                          return val.length < 4
+                              ? "Artist Name must have atleast 4 chars"
+                              : null;
+                        },
+                        decoration: formsWidget.formDecoration('Artist Name',
+                            icon: Icons.mic)),
+                  ),
+                  new Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new TextFormField(
                         onSaved: (val) => signup.username = val,
                         style: TextStyle(color: Colors.black),
                         validator: (val) {
                           return val.length < 4
-                              ? "Name must have atleast 4 chars"
+                              ? "Username must have atleast 4 chars"
                               : null;
                         },
-                        decoration: formsWidget.formDecoration('Name',
+                        decoration: formsWidget.formDecoration('Username',
                             icon: Icons.person)),
                   ),
                   new Padding(
@@ -188,8 +200,10 @@ class _SignupState extends State<Signup> {
       formKey.currentState.save();
       authBloc.register(signup, context);
       authBloc.snacksBar.listen((data) {
+        if(data!=null){
         scaffoldState.currentState.showSnackBar(new SnackBar(
             duration: Duration(seconds: 5), content: new Text(data)));
+        }
       });
     }
   }

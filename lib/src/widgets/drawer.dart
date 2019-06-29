@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vsartist/src/global/uidata.dart';
 import 'package:vsartist/src/global/shared-data.dart';
 import 'package:vsartist/src/dashboard.dart';
+import 'package:vsartist/src/profile/profile.dart';
 import 'package:vsartist/src/widgets/about_tile.dart';
 import 'package:vsartist/src/account/login.dart';
 
@@ -29,7 +30,7 @@ class _CommonDrawerState extends State<CommonDrawer> {
 
   getUserData() async {
     SharedData _pref = SharedData();
-    print(await _pref.getAuthUserData());
+    //print(await _pref.getAuthUserData());
   }
 
   TextStyle style = TextStyle(
@@ -79,7 +80,10 @@ class _CommonDrawerState extends State<CommonDrawer> {
         child: FlatButton(
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           padding: EdgeInsets.all(0),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => new Profile()));
+          },
           child: Text(
             'Edit Profile',
             style: TextStyle(
@@ -88,7 +92,10 @@ class _CommonDrawerState extends State<CommonDrawer> {
             ),
           ),
         ),
-        onPressed: () {}, //callback when button is clicked
+        onPressed: () {
+          Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => new Profile()));
+        }, //callback when button is clicked
         borderSide: BorderSide(
           color: UiData.orange, //Color of the border
           style: BorderStyle.solid, //Style of the border
@@ -122,90 +129,94 @@ class _CommonDrawerState extends State<CommonDrawer> {
                 future: _pref.getAuthUserData(),
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  var data = jsonDecode(snapshot.data);
+                  if (snapshot.hasData) {
+                    var data = jsonDecode(snapshot.data);
+                    return ListView(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        children: <Widget>[
+                          new Container(
+                            // decoration: BoxDecoration(
+                            //   image: DecorationImage(
+                            //     image: AssetImage(UiData.shortBg1drawerbg),
+                            //     fit: BoxFit.fill,
+                            //   ),
+                            // ),
 
-                  return snapshot.hasData
-                      ? ListView(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          children: <Widget>[
-                              new Container(
-                                // decoration: BoxDecoration(
-                                //   image: DecorationImage(
-                                //     image: AssetImage(UiData.shortBg1drawerbg),
-                                //     fit: BoxFit.fill,
-                                //   ),
-                                // ),
-
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 10),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        new CircleAvatar(
-                                          radius: 30.0,
-                                          backgroundImage: data['avatar']
-                                                  .toString()
-                                                  .contains('http')
-                                              ? NetworkImage(data[2])
-                                              : new AssetImage(
-                                                  UiData.userPlaceholder),
-                                        ),
-                                        Container(
-                                            width: 130,
-                                            child: Column(
-                                              children: <Widget>[
-                                                Text(data['username'],
-                                                    style: state.themeData.textTheme.caption),
-                                                Text(data['email'],
-                                                    style: state.themeData.textTheme.caption,
-                                                    overflow:
-                                                        TextOverflow.ellipsis)
-                                              ],
-                                            )),
-                                        editProfile()
-                                      ],
+                            child: Column(
+                              children: [
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    new CircleAvatar(
+                                      radius: 30.0,
+                                      backgroundImage: data['image']
+                                              .toString()
+                                              .contains('http')
+                                          ? NetworkImage(data['image'])
+                                          : new AssetImage(
+                                              UiData.userPlaceholder),
                                     ),
-                                    Divider(height: 40),
-                                    drawerList('Home',
-                                        url: UiData.dashboard,
-                                        theme: state.themeData),
-                                    
-                                    drawerList('Wallet',
-                                        url: UiData.myBalance,
-                                        theme: state.themeData),
-                                    
-                                    drawerList('Upload Singles',
-                                        url: UiData.signlesUploadInstruction,
-                                        theme: state.themeData),
-                                        drawerList('My Music',
-                                        url: UiData.myMusic,
-                                        theme: state.themeData),
-                                        drawerList('Services',
-                                        url: UiData.servicesHome,
-                                        theme: state.themeData),
-                                    Divider(height: 40),
-                                    ListTile(
-                                        onTap: () {
-                                          _pref.disposeLogin();
-                                          Navigator.of(context)
-                                              .popAndPushNamed(UiData.login);
-                                        },
-                                        title: Text('Logout', style: state.themeData.textTheme.caption)),
-                                    Divider(height: 40),
+                                    Container(
+                                        width: 130,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(data['stage_name']?? data['username'],
+                                                style: state.themeData.textTheme
+                                                    .caption),
+                                            Text(data['email'],
+                                                style: state.themeData.textTheme
+                                                    .caption,
+                                                overflow: TextOverflow.ellipsis)
+                                          ],
+                                        )),
+                                    editProfile()
                                   ],
                                 ),
-                              ),
-                              MyAboutTile()
-                            ])
-                      : Container(
-                          color: Colors.orange,
-                        );
+                                Divider(height: 40),
+                                drawerList('Home',
+                                    url: UiData.dashboard,
+                                    theme: state.themeData),
+                                drawerList('Upload Singles',
+                                    url: UiData.signlesUploadInstruction,
+                                    theme: state.themeData),
+                                drawerList('Upload Album',
+                                    url: UiData.albumUploadInstruction,
+                                    theme: state.themeData),
+                                drawerList('My Music',
+                                    url: UiData.myMusic,
+                                    theme: state.themeData),
+                                drawerList('Wallet',
+                                    url: UiData.myBalance,
+                                    theme: state.themeData),
+                                drawerList('Services',
+                                    url: UiData.servicesHome,
+                                    theme: state.themeData),
+                                Divider(height: 40),
+                                ListTile(
+                                    onTap: () {
+                                      _pref.disposeLogin();
+                                      Navigator.of(context)
+                                          .popAndPushNamed(UiData.login);
+                                    },
+                                    title: Text('Logout',
+                                        style:
+                                            state.themeData.textTheme.caption)),
+                                Divider(height: 40),
+                              ],
+                            ),
+                          ),
+                          MyAboutTile()
+                        ]);
+                  } else {
+                    return Container(
+                      color: Colors.orange,
+                    );
+                  }
                 })));
   }
 

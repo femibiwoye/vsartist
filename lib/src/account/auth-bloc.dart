@@ -39,6 +39,7 @@ doLogin(String username, String password, context) async {
       if (res["status"]) {
         User user = User.map(res["body"]);
         String userData = jsonEncode(res["body"]);
+        print(userData);
         SharedData _pref = SharedData();
         _pref.setisUserLogin(true);
         _pref.setAuthToken(user.token);
@@ -60,6 +61,7 @@ doLogin(String username, String password, context) async {
   register(SignupForm signup,context) async {
     _showProgress.add(true);
     Map<dynamic, dynamic> body = {
+      "stage_name": signup.stage_name,
       "username": signup.username,
       "email": signup.email,
       "phone": signup.phone,

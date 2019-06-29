@@ -88,4 +88,11 @@ final List<Section> allSections = <Section>[
     backgroundAsset: UiData.logoWhite,
     keyword: 'album',
   ),
+  const Section(
+    title: 'UNPUBLISHED',
+    leftColor: UiData.orange,
+    rightColor: Colors.cyan,
+    backgroundAsset: UiData.logoWhite,
+    keyword: 'unpublish',
+  ),
 ];

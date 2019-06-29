@@ -19,9 +19,9 @@ class WalletBloc {
   final snackBar = PublishSubject<String>();
   Observable<String> get snacksBar => snackBar.stream;
 
-  getBalance() async {
+  getBalance(context) async {
     String parsed =
-        await network.get(Uri.encodeFull(UiData.domain + "/wallet/balance"));
+        await network.get(Uri.encodeFull(UiData.domain + "/wallet/balance"),context:context);
     var response = jsonDecode(parsed);
     if (response["status"] == false) {
       snackBar.add('Could not fetch balance');

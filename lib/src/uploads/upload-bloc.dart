@@ -26,34 +26,28 @@ class UploadBloc {
   uploadSongs(UploadSingles upload, context) async {
     _showProgress.add(true);
 
-//print(upload.toJson(upload));
+    print(upload.toJson(upload));
+
     ReleaseSingle newSingles = ReleaseSingle.fromJson(upload.toJson(upload));
     Music music = new Music();
 
 //newSingles = newSingles.(upload.tojson(upload));
     print(newSingles.toJson(newSingles));
     var response = await network.post(UiData.domain + "/songs/new-release",
-        body: newSingles.toJson(newSingles));
+        body: newSingles.toJson(newSingles),context: context);
     var res = jsonDecode(response);
-    //print('release response is $res');
     if (res['status']) {
-      print('about uploading songs 1');
       ReleaseSingle release = ReleaseSingle.fromJson(res['body']);
       print(release.releaseId.toString());
       print(release.amountExpected);
-      print('about uploading songs 2');
       for (var i = 0; i < upload.tracksNumber; i++) {
-        print('about uploading songs 3');
         upload.tracks[i].releaseId = release.releaseId.toString();
         print(upload.tracks[i].releaseId);
         print(music.toJson(upload.tracks[i]));
         FormData datas = new FormData.from(music.toJson(upload.tracks[i]));
-print('about uploading songs 4');
         String response = await network
             .postWithFile(UiData.domain + "/songs/upload", body: datas);
-print('about uploading songs 5');
         var decoded = jsonDecode(response);
-print('about uploading songs 6');
         if (decoded["status"]) {
           if (i + 1 == upload.tracksNumber) {
             snackBar.add('$i track uploaded');
@@ -63,7 +57,7 @@ print('about uploading songs 6');
               return new UploadPayment(
                   id: release.releaseId,
                   count: upload.tracksNumber,
-                  type: 'singles');
+                  type: 'release',isDrawer: true);
             }));
           }
         } else if (decoded["error"] != null) {
@@ -86,7 +80,7 @@ print('about uploading songs 6');
     Music music = new Music();
 
     var response = await network.post(UiData.domain + "/songs/new-album",
-        body: newAlbum.toJson(newAlbum));
+        body: newAlbum.toJson(newAlbum),context: context);
 
     var res = jsonDecode(response);
 
@@ -110,7 +104,7 @@ print('about uploading songs 6');
             Navigator.of(context)
                 .pushReplacement(new MaterialPageRoute(builder: (context) {
               return new UploadPayment(
-                  id: release.albumId, count: upload.trackCount, type: 'album');
+                  id: release.albumId, count: upload.trackCount, type: 'album', isDrawer: true);
             }));
           }
         } else if (decoded["error"] != null) {
@@ -123,7 +117,6 @@ print('about uploading songs 6');
       }
     }
   }
-
   // uploadSongs(Music upload) async {
   //   _showProgress.add(true);
   //   final _random = new Random();

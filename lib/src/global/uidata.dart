@@ -4,11 +4,11 @@ class UiData {
   //static const String homeDomain = "http://localhost/vibespot/web";
   //static const String homeDomain = "http://192.168.8.101/vibespot/api/a1";
   
-  //static const String homeDomain = "http://vibespot.akiba.ng/api/a1";
-  //static const String domain = "http://vibespot.akiba.ng/api/a1";
+  static const String homeDomain = "http://vibespot.akiba.ng/api/a1";
+  static const String domain = "http://vibespot.akiba.ng/api/a1";
 
-  static const String homeDomain = "http://192.168.8.100/vibespot/api/a1";
-  static const String domain = "http://192.168.8.100/vibespot/api/a1";
+  //static const String homeDomain = "http://192.168.0.103/vibespot/api/a1";
+  //static const String domain = "http://192.168.0.103/vibespot/api/a1";
 
   //static const String domain = "http://10.0.2.2:8080/vibespot/api/a1";
   static const String webDomain = "$homeDomain";
@@ -35,6 +35,9 @@ class UiData {
   static const String myStatistics = "/myStatistics";
   static const String help = "/help";/// This to be a link to FAQ on a website
   static const String servicesHome = "/servicesHome";
+
+  //static const String paymentKey = 'pk_test_47e502216ebf7256414e0e27494a4132c5c81e63';
+  static const String paymentKey = 'pk_test_7b26bc92d2ed6b175907ea6913786fb05ee2d9e6';
   
 
   //strings

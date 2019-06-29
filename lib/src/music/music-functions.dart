@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vsartist/src/global/uidata.dart';
 import 'package:vsartist/src/music/music-details.dart';
 import 'package:vsartist/src/music/music-list.dart';
+import 'package:vsartist/src/uploads/upload-payment.dart';
 import 'package:vsartist/src/uploads/uploads-model.dart';
 
 class MusicFunctions {
@@ -30,7 +31,7 @@ class MusicFunctions {
                   title: new Text(data[i].title,
                       style: TextStyle(color: Colors.white)),
                   subtitle: new Text(
-                    data[i].duration ?? data[1].description,
+                    data[i].duration ?? data[i].description,
                     style: TextStyle(
                         color: Colors.white70,
                         fontWeight: FontWeight.bold,
@@ -78,6 +79,55 @@ class MusicFunctions {
                 )
               ]),
     );
+  }
+
+  buildUnpublish(List data) {
+    bool status;
+
+    return new ListView.builder(
+        shrinkWrap: true,
+        itemCount: data.length,
+        itemBuilder: (context, i) {
+          
+          if (data[i]['paid_amount'] != null &&
+              data[i]['payment_status'] == "1") {
+            status = true;
+          } else {
+            status = false;
+          }
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new ListTile(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(new MaterialPageRoute(builder: (context) {
+                      return new UploadPayment(
+                        id: int.tryParse(data[i]['id']),
+                        type: data[i]['type'],
+                        isDrawer: false,
+                        count: int.tryParse(data[i]['track_count']),
+                      );
+                    }));
+                  },
+                  title: new Text(
+                      '${data[i]['title']} (${data[i]['track_count']})',
+                      style: TextStyle(color: Colors.white)),
+                  subtitle: new Text(
+                    '${data[i]['type']} - ${data[i]['release_date']} - ${data[i]['amount_expected']}',
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11.0),
+                  ),
+                  trailing: new Text(
+                    status ? 'Yet Published' : 'Unpaid',
+                    style:
+                        TextStyle(color: status ? Colors.grey : Colors.orange),
+                  ),
+                )
+              ]);
+        });
   }
 
   buildAlbum(List<UploadAlbumDetails> data) {

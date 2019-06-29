@@ -149,9 +149,9 @@ class ReleaseSingle {
   factory ReleaseSingle.fromJson(Map<String, dynamic> json) {
     return new ReleaseSingle(
       releaseId: json['id'],
-      amountExpected: json['amount_expected'] is int
+      amountExpected:json['amount_expected']!=null && json['amount_expected'] is int
           ? json['amount_expected']
-          : int.tryParse(json['amount_expected']),
+          : json['amount_expected']!=null ?int.tryParse(json['amount_expected']):null,
       tracksNumber: json['track_count'].toString(),
       releaseName: json['release_name'],
       releaseDate: json['release_date'].toString(),
@@ -225,6 +225,7 @@ class Music {
         releaseId: json['release_id'].toString(),
         albumId: json['album_id'].toString(),
         title: json['title'],
+        duration: json['duration'],
         releaseName: json['release_name'],
         description: json['description'],
         genre: json['genre'],
