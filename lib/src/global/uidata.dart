@@ -4,11 +4,11 @@ class UiData {
   //static const String homeDomain = "http://localhost/vibespot/web";
   //static const String homeDomain = "http://192.168.8.101/vibespot/api/a1";
   
-  //static const String homeDomain = "http://vibespot.akiba.ng/api/a1";
-  //static const String domain = "http://vibespot.akiba.ng/api/a1";
+  static const String homeDomain = "http://vibespot.akiba.ng/api/a1";
+  static const String domain = "http://vibespot.akiba.ng/api/a1";
 
-  static const String homeDomain = "http://192.168.0.103/vibespot/api/a1";
-  static const String domain = "http://192.168.0.103/vibespot/api/a1";
+  //static const String homeDomain = "http://192.168.0.103/vibespot/api/a1";
+  //static const String domain = "http://192.168.0.103/vibespot/api/a1";
 
   //static const String domain = "http://10.0.2.2:8080/vibespot/api/a1";
   static const String webDomain = "$homeDomain";
