@@ -112,7 +112,7 @@ class _SinglesUploadState extends State<SinglesUpload>
       return new DropdownMenuItem<String>(
         child: new Text(
           item['name'],
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item['alias'].toString(),
       );
@@ -124,7 +124,7 @@ class _SinglesUploadState extends State<SinglesUpload>
       return new DropdownMenuItem<String>(
         child: new Text(
           item['name'],
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item['alias'].toString(),
       );
@@ -176,7 +176,7 @@ class _SinglesUploadState extends State<SinglesUpload>
       return new DropdownMenuItem<String>(
         child: new Text(
           item,
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item.toString(),
       );
@@ -185,7 +185,8 @@ class _SinglesUploadState extends State<SinglesUpload>
 
   Widget uploadCoverImage() {
     return Card(
-      color: Colors.grey.shade700,
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(side: BorderSide(color: Colors.white)),
       child: new SizedBox(
         child: Center(
           child: Column(children: [
@@ -232,7 +233,8 @@ class _SinglesUploadState extends State<SinglesUpload>
 
   Widget uploadTrack() {
     return Card(
-      color: Colors.grey.shade700,
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(side: BorderSide(color: Colors.white)),
       child: new SizedBox(
         height: 90.0,
         child: Center(
@@ -399,11 +401,11 @@ class _SinglesUploadState extends State<SinglesUpload>
                               formsWidget.fieldSpace(),
                               formsWidget.textInput(
                                   'Track Title', onSavedTrackTitle),
-                              formsWidget.fieldSpace(),
+                              //formsWidget.fieldSpace(),
                               formsWidget.textAreaInput(
                                   'Track Description', onSavedTrackDescription,
                                   lines: 3),
-                              formsWidget.fieldSpace(),
+                              //formsWidget.fieldSpace(),
                               formsWidget.dropdownField(
                                   'Genre',
                                   functions.genres(),
@@ -432,7 +434,7 @@ class _SinglesUploadState extends State<SinglesUpload>
                                   musicUpload.push_state,
                                   pushStateOnChange,
                                   label: 'State'),
-                              formsWidget.fieldSpace(),
+                              //formsWidget.fieldSpace(),
                               formsWidget.dropdownField(
                                   'Select Push City',
                                   cities(),

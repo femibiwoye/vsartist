@@ -19,29 +19,36 @@ List<PageModel> pages = [
   PageModel(
       assetImagePath: UiData.logo,
       background: 'assets/images/splash-background.png',
-      title: 'MUSIC IS EVERYTHING',
+      title: 'DREAM TO REALITY',
       text:
-          'This is a description you might want people to see on the first page of the mobile app. Note, it could also be multiple line.',
+          'Vibespot For Artist is designed specifically for you to get the most out of Vibespot.',
       textColor: Colors.white),
   PageModel(
-      assetImagePath: 'assets/images/no-data-image.png',
+      assetImagePath: 'assets/images/onboard/manage-profile.png',
       background: 'assets/images/splash-background.png',
-      title: 'EARN WHILE YOU LISTEN TO SONGS',
+      title: 'MANAGE YOUR PROFILE',
       text:
-          'This is a description you might want people to see on the first page of the mobile app.',
+          'Update your bio, share your playlist, control how listeners see you on Vibespot.',
       textColor: Colors.white),
   PageModel(
-      assetImagePath: 'assets/images/no-data-image.png',
+      assetImagePath: 'assets/images/onboard/fan-base.png',
       background: 'assets/images/splash-background.png',
-      title: 'Music for The street',
+      title: 'BUILD YOUR LOCAL FAN BASE',
       text:
-          'This is a description you might want people to see on the first page of the mobile app. Note, it could also be multiple line.',
+          'Push your song to your best Audience. Using the State Vibes and Push Notification feature.',
       textColor: Colors.white),
   PageModel(
-      assetImagePath: 'assets/images/no-data-image.png',
+      assetImagePath: 'assets/images/onboard/statistics.png',
       background: 'assets/images/splash-background.png',
-      title: 'Music for all',
+      title: 'LIVE UPDATES ON YOUR STATISTICS',
       text:
-          'This is a description you might want people to see on the first page of the mobile app. ',
+          'Get live updates on how listeners react to your music including updates on how much money you earn.',
+      textColor: Colors.white),
+  PageModel(
+      assetImagePath: 'assets/images/onboard/partnership.png',
+      background: 'assets/images/splash-background.png',
+      title: 'WORK WITH US',
+      text:
+          'We provide a wide range of services as a media company. We would be happy to work with you. Lifting your career to the next level.',
       textColor: Colors.white),
 ];

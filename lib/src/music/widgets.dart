@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vsartist/src/global/uidata.dart';
 
 import 'sections.dart';
 
@@ -62,7 +63,7 @@ class SectionTitle extends StatelessWidget {
     inherit: false,
     fontSize: 24.0,
     fontWeight: FontWeight.w500,
-    color: Colors.white,
+    color: UiData.orange,
     textBaseline: TextBaseline.alphabetic,
   );
 

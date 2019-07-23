@@ -120,10 +120,11 @@ class _LoginState extends State<Login> {
 
   Widget _usernameContainer() {
     return new Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: new TextFormField(
+        
           onSaved: (val) => _username = val,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           validator: (val) {
             return val.length < 4 ? "Username must have atleast 4 chars" : null;
           },
@@ -134,9 +135,9 @@ class _LoginState extends State<Login> {
 
   Widget _passwordContainer() {
     return new Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: new TextFormField(
-          style: TextStyle(color: Colors.black45),
+          style: TextStyle(color: Colors.white),
           obscureText: true,
           onSaved: (val) => _password = val,
           validator: (val) {

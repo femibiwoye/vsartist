@@ -42,7 +42,7 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
       return new DropdownMenuItem<String>(
         child: new Text(
           item['title'],
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item['count'].toString(),
       );
@@ -115,9 +115,10 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
                     formsWidget.dropdownField(
                         'Number of tracks', trackLists(), uploadCount, onChange,
                         label: 'Number of tracks'),
-                    SizedBox(height: 20.0),
+                    //SizedBox(height: 20.0),
                     DateTimePickerFormField(
                         inputType: InputType.date,
+                        style: TextStyle(color: Colors.white),
                         format: DateFormat('yyyy-MM-dd'),
                         firstDate: uploadDate,
                         initialDate: uploadDate,
@@ -129,7 +130,7 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
                           print(dt);
                           setState(() => tracksModel.releaseDate = dt);
                         }),
-                    SizedBox(height: 20.0),
+                    //SizedBox(height: 20.0),
                     formsWidget.textInput('Release Name', onSaved),
                     Padding(
                         padding: EdgeInsets.all(5),

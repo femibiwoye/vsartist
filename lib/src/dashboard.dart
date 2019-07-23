@@ -141,10 +141,11 @@ class _DashboardState extends State<Dashboard> {
 
   Card makeDashboardItem(String title, IconData icon, {url}) {
     return Card(
-        elevation: 2.0,
+        elevation: 6.0,
         margin: new EdgeInsets.all(10.0),
+        color: UiData.orange,
         child: Container(
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(color: Color(0xFF111010), borderRadius: BorderRadius.circular(20)),
           child: new InkWell(
             onTap: () {
               if (url != null)

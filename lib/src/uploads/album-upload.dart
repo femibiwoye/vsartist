@@ -168,11 +168,11 @@ class _AlbumUploadState extends State<AlbumUpload>
                               formsWidget.fieldSpace(),
                               formsWidget.textInput(
                                   'Track Title', onSavedTrackTitle),
-                              formsWidget.fieldSpace(),
+                              //formsWidget.fieldSpace(),
                               formsWidget.textAreaInput(
                                   'Track Description', onSavedTrackDescription,
                                   lines: 3),
-                              formsWidget.fieldSpace(),
+                              //formsWidget.fieldSpace(),
                               formsWidget.dropdownField(
                                   'Genre',
                                   functions.genres(),

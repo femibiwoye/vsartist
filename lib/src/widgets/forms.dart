@@ -4,18 +4,25 @@ import 'package:vsartist/src/global/uidata.dart';
 import 'package:path/path.dart' as path;
 
 class FormsWidget {
+  inputBorder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.elliptical(0, 0)),
+      //borderRadius: BorderRadius.all(Radius.circular(22.0)),
+      borderSide: const BorderSide(color: Colors.white, width: 0.0),
+    );
+  }
+
   formDecoration(title, {icon}) {
     return InputDecoration(
+      focusedBorder: inputBorder(),
+      errorBorder: inputBorder(),
       hintText: title,
-      prefixIcon: icon != null ? Icon(icon, color: UiData.orange) : null,
-      hintStyle: new TextStyle(color: UiData.orange),
+      prefixIcon: icon != null ? Icon(icon, color: Colors.white) : null,
+      hintStyle: new TextStyle(color: Colors.white),
       filled: true,
-      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-      fillColor: Colors.white,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(22.0)),
-        borderSide: const BorderSide(color: Colors.deepOrange, width: 0.0),
-      ),
+      contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      fillColor: Colors.transparent,
+      enabledBorder: inputBorder(),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(22.0),
       ),
@@ -26,15 +33,13 @@ class FormsWidget {
     return InputDecoration(
       hintText: title,
       filled: true,
-      fillColor: Colors.white,
-      prefixIcon: icon != null ? Icon(icon, color: UiData.orange) : null,
-      suffixIcon: surfix != null ? Icon(surfix, color: UiData.orange) : null,
-      hintStyle: new TextStyle(color: UiData.orange),
-      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(22.0)),
-        borderSide: const BorderSide(color: Colors.deepOrange, width: 0.0),
-      ),
+      fillColor: Colors.transparent,
+      prefixIcon: icon != null ? Icon(icon, color: Colors.white) : null,
+      suffixIcon: surfix != null ? Icon(surfix, color: Colors.white) : null,
+      hintStyle: new TextStyle(color: Colors.white),
+      contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+      enabledBorder: inputBorder(),
+      errorBorder: inputBorder(),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(22),
       ),
@@ -52,7 +57,7 @@ class FormsWidget {
 
   delayTime(delay) async {
     //await new Future.delayed(Duration(seconds: delay));
-    sleep( Duration(seconds: delay));
+    sleep(Duration(seconds: delay));
   }
 
   appIcon() {
@@ -69,14 +74,19 @@ class FormsWidget {
   dropdownField(hint, items, value, onChange, {prefix, label}) {
     return Container(
       child: DropdownButtonHideUnderline(
-        child: DropdownButtonFormField<String>(
-          decoration: dropdownDecoration(hint, icon: prefix),
-          items: items,
-          onChanged: (String newValue) {
-            onChange(newValue);
-          },
-          value: value,
-        ),
+        child: Theme(
+            data: ThemeData.dark(),
+            child: DropdownButtonFormField<String>(
+              decoration: dropdownDecoration(hint, icon: prefix),
+              validator: (val) {
+                return val == null ? "$hint Cannot be empty" : null;
+              },
+              items: items,
+              onChanged: (String newValue) {
+                onChange(newValue);
+              },
+              value: value,
+            )),
       ),
     );
   }
@@ -84,7 +94,7 @@ class FormsWidget {
   Widget textInput(title, onSaved, {prefixIcon}) {
     return new TextFormField(
       onSaved: (val) => onSaved(val),
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Colors.white),
       validator: (val) {
         return val.length < 1 ? "$title Cannot be empty" : null;
       },
@@ -96,7 +106,7 @@ class FormsWidget {
     return new TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (val) => onSaved(val),
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Colors.white),
       validator: (val) {
         return val.length < 1 ? "$title Cannot be empty" : null;
       },
@@ -108,7 +118,7 @@ class FormsWidget {
     return new TextFormField(
       keyboardType: TextInputType.phone,
       onSaved: (val) => onSaved(val),
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Colors.white),
       validator: (val) {
         return val.length < 1 ? "$title Cannot be empty" : null;
       },
@@ -120,7 +130,7 @@ class FormsWidget {
     return new TextFormField(
       onSaved: (val) => onSaved(val),
       maxLines: lines ?? 5,
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Colors.white),
       validator: (val) {
         return val.length < 1 ? "$title Cannot be empty" : null;
       },
@@ -131,7 +141,7 @@ class FormsWidget {
   Widget passwordInput(title, onSaved, {prefixIcon}) {
     return new TextFormField(
       onSaved: (val) => onSaved(val),
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Colors.white),
       obscureText: true,
       validator: (val) {
         return val.length < 1 ? "$title Cannot be empty" : null;
@@ -140,9 +150,10 @@ class FormsWidget {
     );
   }
 
-  Widget imageInput(title,image,pressAction) {
+  Widget imageInput(title, image, pressAction) {
     return Card(
-      color: Colors.grey.shade700,
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(side: BorderSide(color: Colors.white)),
       child: new SizedBox(
         child: Center(
           child: Column(children: [
@@ -187,9 +198,10 @@ class FormsWidget {
     );
   }
 
-  Widget uploadFile(filePath,_getFilePath) {
+  Widget uploadFile(filePath, _getFilePath) {
     return Card(
-      color: Colors.grey.shade700,
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(side: BorderSide(color: Colors.white)),
       child: new SizedBox(
         height: 90.0,
         child: Center(
@@ -255,9 +267,8 @@ class FormsWidget {
       ),
     );
   }
-  
 
-  Widget sectionHeader(title,{position:TextAlign.left}) {
+  Widget sectionHeader(title, {position: TextAlign.left}) {
     return Padding(
       padding: EdgeInsets.only(left: 10, top: 30),
       child: new Text(
@@ -297,7 +308,7 @@ class FormsWidget {
         ]));
   }
 
-  Widget sectionH3(title,{position:TextAlign.left}) {
+  Widget sectionH3(title, {position: TextAlign.left}) {
     return Padding(
       padding: EdgeInsets.only(left: 10, top: 30),
       child: new Text(
@@ -311,27 +322,46 @@ class FormsWidget {
       ),
     );
   }
-  Widget sectionBody(content,{position:TextAlign.left}) {
+
+  Widget sectionH1(title, {position: TextAlign.left}) {
     return Padding(
-        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 24),
-        child: new Text(
-          content,
-          style: new TextStyle(
-            color: Colors.white,
-            fontFamily: 'Poppins',
-            fontSize: 15.0,
-          ),
-          textAlign: position,
+      padding: EdgeInsets.only(top: 30, left: 10),
+      child: new Text(
+        title,
+        style: new TextStyle(
+          color: Colors.orange.shade700,
+          fontFamily: 'Poppins-Bold',
+          fontSize: 35.0,
+          fontWeight: FontWeight.w600,
         ),
-      );
+        textAlign: position,
+      ),
+    );
+  }
+
+  Widget sectionBody(content, {position: TextAlign.left, size: 15.0}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 24),
+      child: new Text(
+        content,
+        style: new TextStyle(
+          color: Colors.white,
+          fontFamily: 'Poppins',
+          fontSize: size,
+        ),
+        textAlign: position,
+      ),
+    );
   }
 
   Widget wideButton(title, context, _continue) {
     return ButtonTheme(
       minWidth: MediaQuery.of(context).size.width,
-      height: 50.0,
+      height: 55.0,
       buttonColor: UiData.orange,
       child: RaisedButton(
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0)),
         elevation: 5,
         onPressed: _continue,
         child: Text(title, style: TextStyle(fontSize: 17, color: Colors.white)),

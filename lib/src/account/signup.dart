@@ -45,7 +45,7 @@ class _SignupState extends State<Signup> {
       return new DropdownMenuItem<String>(
         child: new Text(
           item['name'],
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item['alias'].toString(),
       );
@@ -57,7 +57,7 @@ class _SignupState extends State<Signup> {
       return new DropdownMenuItem<String>(
         child: new Text(
           item['name'],
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item['alias'].toString(),
       );
@@ -65,7 +65,7 @@ class _SignupState extends State<Signup> {
   }
 
   checkInternet() async {
-    if (await networkBloc.checkInternet() != null){
+    if (await networkBloc.checkInternet() != null) {
       authBloc.snackBar.add(await networkBloc.checkInternet());
     }
   }
@@ -95,10 +95,10 @@ class _SignupState extends State<Signup> {
               child: new Column(
                 children: <Widget>[
                   new Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: new TextFormField(
                         onSaved: (val) => signup.stage_name = val,
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                         validator: (val) {
                           return val.length < 4
                               ? "Artist Name must have atleast 4 chars"
@@ -108,10 +108,10 @@ class _SignupState extends State<Signup> {
                             icon: Icons.mic)),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: new TextFormField(
                         onSaved: (val) => signup.username = val,
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                         validator: (val) {
                           return val.length < 4
                               ? "Username must have atleast 4 chars"
@@ -121,11 +121,11 @@ class _SignupState extends State<Signup> {
                             icon: Icons.person)),
                   ),
                   new Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: new TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         onSaved: (val) => signup.email = val,
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                         validator: (val) {
                           return val.length < 4
                               ? "Email must have atleast 4 chars"
@@ -135,11 +135,11 @@ class _SignupState extends State<Signup> {
                             icon: Icons.email),
                       )),
                   new Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: new TextFormField(
                         keyboardType: TextInputType.phone,
                         onSaved: (val) => signup.phone = val,
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                         validator: (val) {
                           return val.length < 4
                               ? "Phone Number must have atleast 4 chars"
@@ -149,21 +149,23 @@ class _SignupState extends State<Signup> {
                             icon: Icons.phone)),
                   ),
                   Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: formsWidget.dropdownField('Select Your State',
                           states(), signup.state, stateOnChange,
-                          prefix: Icons.location_on, label: 'State')),
+                          prefix: Icons.location_on,
+                          label: 'State')),
                   Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: formsWidget.dropdownField('Select Your City',
                           cities(), signup.city, cityOnChange,
-                          prefix: Icons.location_city, label: 'Cities')),
+                          prefix: Icons.location_city,
+                          label: 'Cities')),
                   new Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: new TextFormField(
                         onSaved: (val) => signup.password = val,
                         obscureText: true,
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                         validator: (val) {
                           return val.length < 4
                               ? "Password must have atleast 4 chars"
@@ -173,11 +175,11 @@ class _SignupState extends State<Signup> {
                             icon: Icons.security)),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: new TextFormField(
                         onSaved: (val) => signup.password_confirmation = val,
                         obscureText: true,
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                         validator: (val) {
                           return val.length < 4
                               ? "Password must have atleast 4 chars"
@@ -200,9 +202,9 @@ class _SignupState extends State<Signup> {
       formKey.currentState.save();
       authBloc.register(signup, context);
       authBloc.snacksBar.listen((data) {
-        if(data!=null){
-        scaffoldState.currentState.showSnackBar(new SnackBar(
-            duration: Duration(seconds: 5), content: new Text(data)));
+        if (data != null) {
+          scaffoldState.currentState.showSnackBar(new SnackBar(
+              duration: Duration(seconds: 5), content: new Text(data)));
         }
       });
     }
@@ -271,7 +273,10 @@ class _SignupState extends State<Signup> {
           new Center(
             child: new Column(
               children: <Widget>[
-                formsWidget.appIcon(),
+                //formsWidget.appIcon(),
+                formsWidget.sectionH1('Welcome'),
+                formsWidget.sectionBody('Introduce yourself', size: 20.0),
+                SizedBox(height: 10),
                 signupFields(),
               ],
             ),

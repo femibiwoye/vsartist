@@ -54,7 +54,7 @@ class _EditProfileState extends State<EditProfile> {
       return new DropdownMenuItem<String>(
         child: new Text(
           item['name'],
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item['alias'].toString(),
       );
@@ -66,7 +66,7 @@ class _EditProfileState extends State<EditProfile> {
       return new DropdownMenuItem<String>(
         child: new Text(
           item['name'],
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item['alias'].toString(),
       );
@@ -149,7 +149,7 @@ class _EditProfileState extends State<EditProfile> {
                       children: <Widget>[
                         new TextFormField(
                           onSaved: (val) => profile.stageName = val,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           initialValue: profile.stageName,
                           validator: (val) {
                             return val.length < 1
@@ -161,7 +161,7 @@ class _EditProfileState extends State<EditProfile> {
                         SizedBox(height: 15),
                         new TextFormField(
                           onSaved: (val) => profile.surname = val,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           initialValue: profile.surname,
                           validator: (val) {
                             return val.length < 1
@@ -173,7 +173,7 @@ class _EditProfileState extends State<EditProfile> {
                         SizedBox(height: 15),
                         TextFormField(
                           onSaved: (val) => profile.firstname = val,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           initialValue: profile.firstname,
                           validator: (val) {
                             return val.length < 1
@@ -185,7 +185,7 @@ class _EditProfileState extends State<EditProfile> {
                         SizedBox(height: 15),
                         TextFormField(
                           onSaved: (val) => profile.othernames = val,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           initialValue: profile.othernames,
                           decoration: formsWidget.formDecoration('Othernames'),
                         ),
@@ -193,7 +193,7 @@ class _EditProfileState extends State<EditProfile> {
                         new TextFormField(
                           keyboardType: TextInputType.phone,
                           onSaved: (val) => profile.phone = val,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           initialValue: profile.phone,
                           validator: (val) {
                             return val.length < 1

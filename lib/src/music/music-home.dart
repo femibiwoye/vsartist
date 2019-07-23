@@ -14,7 +14,7 @@ import 'sections.dart';
 import 'widgets.dart';
 
 
-const Color _kAppBackgroundColor = Color(0xFF353662);
+const Color _kAppBackgroundColor =Color(0xFF0d0b0b);
 const Duration _kScrollDuration = Duration(milliseconds: 400);
 const Curve _kScrollCurve = Curves.fastOutSlowIn;
 

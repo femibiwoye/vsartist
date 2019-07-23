@@ -82,7 +82,7 @@ class _CommonDrawerState extends State<CommonDrawer> {
           padding: EdgeInsets.all(0),
           onPressed: () {
             Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new Profile()));
+                new MaterialPageRoute(builder: (context) => new Profile()));
           },
           child: Text(
             'Edit Profile',
@@ -94,7 +94,7 @@ class _CommonDrawerState extends State<CommonDrawer> {
         ),
         onPressed: () {
           Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new Profile()));
+              new MaterialPageRoute(builder: (context) => new Profile()));
         }, //callback when button is clicked
         borderSide: BorderSide(
           color: UiData.orange, //Color of the border
@@ -165,7 +165,9 @@ class _CommonDrawerState extends State<CommonDrawer> {
                                         width: 130,
                                         child: Column(
                                           children: <Widget>[
-                                            Text(data['stage_name']?? data['username'],
+                                            Text(
+                                                data['stage_name'] ??
+                                                    data['username'],
                                                 style: state.themeData.textTheme
                                                     .caption),
                                             Text(data['email'],

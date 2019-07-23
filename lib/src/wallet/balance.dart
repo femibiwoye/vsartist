@@ -26,7 +26,7 @@ class _WalletBalanceState extends State<WalletBalance> {
         //initialData: '0.00',
         builder: (context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
-            return Text(snapshot.data);
+            return Text(snapshot.data, style: TextStyle(color: UiData.orange));
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
@@ -50,7 +50,7 @@ class _WalletBalanceState extends State<WalletBalance> {
           ),
           title: Row(
             children: <Widget>[
-              Image.asset(UiData.logoWhite, width: 40),
+              Image.asset(UiData.logoMedium, width: 40),
               SizedBox(
                 width: 10.0,
               ),

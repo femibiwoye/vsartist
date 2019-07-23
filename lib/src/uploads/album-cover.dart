@@ -46,7 +46,7 @@ class _AlbumCoverState extends State<AlbumCover> {
       return new DropdownMenuItem<String>(
         child: new Text(
           '${item.toString()} tracks',
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
         value: item.toString(),
       );
@@ -132,15 +132,16 @@ class _AlbumCoverState extends State<AlbumCover> {
                     formsWidget.sectionHeader('Album details'),
                     formsWidget.fieldSpace(),
                     formsWidget.textInput('Album title', onSavedTitle),
-                    formsWidget.fieldSpace(),
+                    //formsWidget.fieldSpace(),
                     formsWidget.textAreaInput('Album description', onSavedDescription),
-                    formsWidget.fieldSpace(),
+                    //formsWidget.fieldSpace(),
                     formsWidget.dropdownField(
                         'Number of tracks', trackLists(), uploadCount, onChange,
                         label: 'Number of tracks'),
-                    SizedBox(height: 20.0),
+                    //SizedBox(height: 20.0),
                     DateTimePickerFormField(
                         inputType: InputType.date,
+                        style: TextStyle(color: Colors.white),
                         format: DateFormat('yyyy-MM-dd'),
                         firstDate: uploadDate,
                         initialDate: uploadDate,

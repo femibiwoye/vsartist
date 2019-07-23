@@ -25,7 +25,7 @@ class GymTutorialBodyState extends State<GymTutorialBody> {
   var deviceSize;
   PageController _pageController;
   CrossFadeState _bottomState = CrossFadeState.showFirst;
-  
+
   void initState() {
     super.initState();
     _pageController = PageController();
@@ -43,7 +43,7 @@ class GymTutorialBodyState extends State<GymTutorialBody> {
     if (_pageController.hasClients) {
       double page = _pageController.page ?? _pageController.initialPage;
       setState(() {
-        if (page >= 3) {
+        if (page >= 4) {
           _bottomState = CrossFadeState.showSecond;
         } else {
           _bottomState = CrossFadeState.showFirst;
@@ -160,7 +160,7 @@ class PageIndicators extends StatelessWidget {
 
   Widget skipButton() => InkWell(
         onTap: () {
-          pageController.animateToPage(3,
+          pageController.animateToPage(4,
               curve: Curves.decelerate, duration: Duration(milliseconds: 500));
         },
         child: Padding(
@@ -203,14 +203,16 @@ class PageIndicators extends StatelessWidget {
             alignment: Alignment.center,
             child: PageViewIndicator(
               controller: pageController,
-              pageCount: 4,
+              pageCount: 5,
               color: Colors.black,
             )),
         Align(
           alignment: Alignment.centerRight,
           child:
-            //pageController.page!=null &&  pageController.page >= 3 ? finishButton(context) : skipButton(),
-            pageController.page!=null &&  pageController.page.round() >= 3 ? finishButton(context) : skipButton(),
+              //pageController.page!=null &&  pageController.page >= 3 ? finishButton(context) : skipButton(),
+              pageController.page != null && pageController.page.round() >= 4
+                  ? finishButton(context)
+                  : skipButton(),
         ),
       ],
     );

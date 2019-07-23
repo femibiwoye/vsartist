@@ -68,6 +68,7 @@ flutter:
   assets:
    - assets/images/splash.png
    - assets/images/vibeStream-selected-icon.png
+   - assets/images/logo-200.png
    - assets/images/vibeStream-white-icon.png
    - assets/images/splash-background.png
    - assets/images/user-avatar.png
@@ -91,6 +92,12 @@ flutter:
    - assets/images/successful-payment.png
    - assets/images/myAccount-selected-icon.png
    - assets/images/icons/vibespot_app-xx.png
+
+   # For onboarding screens
+   - assets/images/onboard/manage-profile.png
+   - assets/images/onboard/fan-base.png
+   - assets/images/onboard/statistics.png
+   - assets/images/onboard/partnership.png
 
    - assets/datas/states.json
    - assets/datas/cities.json

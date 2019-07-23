@@ -12,6 +12,8 @@ class App extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+
+    ErrorWidget.builder = (FlutterErrorDetails errorDetails) {};
     // TODO: implement build
     return MaterialApp(
       title: UiData.appName,
@@ -26,6 +28,26 @@ class App extends StatelessWidget {
                 message: "Under Development",
                 iconColor: UiData.orange,
               )),
+      builder: (BuildContext context, Widget widget) {
+        ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+          return getErrorWidget(context, errorDetails);
+        };
+
+        return widget;
+      },
+    );
+  }
+
+  Widget getErrorWidget(BuildContext context, FlutterErrorDetails error) {
+    print('The error message is $error');
+    return Center(
+      child: Text(
+        "Something went wrong here",
+        style: Theme.of(context)
+            .textTheme
+            .subtitle
+            .copyWith(color: Colors.black87),
+      ),
     );
   }
 }
