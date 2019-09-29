@@ -31,7 +31,7 @@ class _AlbumCoverState extends State<AlbumCover> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getTrackNumber(4, 15);
+    getTrackNumber(1, 15);
     uploadDate = uploadDate.add(Duration(days: 7));
   }
 

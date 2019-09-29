@@ -60,7 +60,9 @@ class _CommonDrawerState extends State<CommonDrawer> {
                         )),
                   ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).popAndPushNamed(UiData.login);
+                    },
                     child: Text(
                       'Log In / Sign Up',
                       style: state.themeData.textTheme.body2,

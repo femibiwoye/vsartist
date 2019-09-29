@@ -122,7 +122,6 @@ class _LoginState extends State<Login> {
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: new TextFormField(
-        
           onSaved: (val) => _username = val,
           style: TextStyle(color: Colors.white),
           validator: (val) {

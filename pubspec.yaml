@@ -42,9 +42,9 @@ dependencies:
   #flute_music_player: ^0.0.6
   #flutter_sound: ^1.4.1
   #audioplayers: ^0.12.1
-  #flutter_paystack: ^1.0.1
+  flutter_paystack: ^1.0.1
   #flutter_paystack: ^0.10.0
-  flutter_paystack: 0.10.0
+  #flutter_paystack: 0.10.0
   url_launcher: ^5.0.3
   toast: ^0.1.4
 
