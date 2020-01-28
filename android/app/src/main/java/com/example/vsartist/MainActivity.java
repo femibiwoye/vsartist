@@ -1,4 +1,4 @@
-package com.example.vsartist;
+package com.vsartist.mobile;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

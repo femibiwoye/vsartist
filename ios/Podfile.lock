@@ -26,7 +26,7 @@ PODS:
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `Flutter`)
   - flutter_paystack (from `.symlinks/plugins/flutter_paystack/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -35,7 +35,7 @@ DEPENDENCIES:
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - FMDB
     - Reachability
 
@@ -45,7 +45,7 @@ EXTERNAL SOURCES:
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: Flutter
   flutter_paystack:
     :path: ".symlinks/plugins/flutter_paystack/ios"
   image_picker:
@@ -60,18 +60,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
-  connectivity: d5992e3758d68b1c4b12d6e012fe0813f1aa1645
-  file_picker: 78c3344d9b2c343bb3090c2f032b796242ebaea7
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  flutter_paystack: 37e137f43f0effbe2c0ade58aad8b90c129f2588
+  connectivity: c72716e202a1225ec4810740d5cb56b8ae3bf4cc
+  file_picker: 408623be2125b79a4539cf703be3d4b3abe5e245
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_paystack: 50021637b71e7712780744f69d2843e71b65175d
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  image_picker: 86b84c4fe89267356a1f17297a45b5d317ebd2e7
-  path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
+  image_picker: 16e5fec1fbc87fd3b297c53e4048521eaf17cd06
+  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
-  sqflite: d1612813fa7db7c667bed9f1d1b508deffc56999
-  url_launcher: 92b89c1029a0373879933c21642958c874539095
+  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
+  sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
+  url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
 
-PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
+PODFILE CHECKSUM: 3dbe063e9c90a5d7c9e4e76e70a821b9e2c1d271
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.4

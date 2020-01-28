@@ -216,7 +216,8 @@ class Music {
       'stream': instance.stream,
       'release_date': instance.release_date,
       'image': instance.image,
-      'song': new UploadFileInfo(new File(instance.song), fileName),
+      //'song': new UploadFileInfo(new File(instance.song), fileName),
+      'song':  MultipartFile.fromFileSync(instance.song, filename: fileName),
     };
   }
 

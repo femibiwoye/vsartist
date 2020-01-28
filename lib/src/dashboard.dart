@@ -66,7 +66,7 @@ class _DashboardState extends State<Dashboard> {
             makeDashboardItem("My Music", Icons.library_music, url: UiData.myMusic),
             //makeDashboardItem("Playlist", Icons.graphic_eq),
             makeDashboardItem("Balance", Icons.attach_money, url: UiData.myBalance),
-            makeDashboardItem("Help", Icons.info),
+            //makeDashboardItem("Help", Icons.info),
             makeDashboardItem("Services", Icons.work, url: UiData.servicesHome),
             //makeDashboardItem("Statistics", Icons.show_chart)
           ],

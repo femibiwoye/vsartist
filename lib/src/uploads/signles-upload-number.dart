@@ -34,7 +34,7 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
     // TODO: implement initState
     super.initState();
 
-    uploadDate = uploadDate.add(Duration(days: 7));
+    uploadDate = uploadDate.add(Duration(days: 2));
   }
 
   trackLists() {
@@ -132,15 +132,15 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
                         }),
                     //SizedBox(height: 20.0),
                     formsWidget.textInput('Release Name', onSaved),
-                    Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Tooltip(
-                            message: releaseNameTooltip,
-                            child: Text(
-                              releaseNameTooltip,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
-                            ))),
+                    // Padding(
+                    //     padding: EdgeInsets.all(5),
+                    //     child: Tooltip(
+                    //         message: releaseNameTooltip,
+                    //         child: Text(
+                    //           releaseNameTooltip,
+                    //           style:
+                    //               TextStyle(color: Colors.white, fontSize: 12),
+                    //         ))),
                     SizedBox(height: 15.0),
                     Padding(
                         padding: const EdgeInsets.all(8.0),

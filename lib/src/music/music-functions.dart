@@ -28,10 +28,10 @@ class MusicFunctions {
                         ? new AssetImage(UiData.logo)
                         : new NetworkImage(data[i].image),
                   ),
-                  title: new Text(data[i].title,
+                  title: new Text('${data[i].title}',
                       style: TextStyle(color: Colors.white)),
                   subtitle: new Text(
-                    data[i].duration ?? data[i].description,
+                    '${data[i].duration} (${data[i].streamed} streams)' ?? data[i].description,
                     style: TextStyle(
                         color: Colors.white70,
                         fontWeight: FontWeight.bold,

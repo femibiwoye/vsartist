@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
+import 'package:vsartist/src/uploads/singles-upload-finish.dart';
 import 'package:vsartist/src/uploads/uploads-model.dart';
 import 'package:vsartist/src/global/networks.dart';
 import 'package:path/path.dart' as path;
@@ -34,7 +35,7 @@ class UploadBloc {
 //newSingles = newSingles.(upload.tojson(upload));
     print(newSingles.toJson(newSingles));
     var response = await network.post(UiData.domain + "/songs/new-release",
-        body: newSingles.toJson(newSingles),context: context);
+        body: newSingles.toJson(newSingles), context: context);
     var res = jsonDecode(response);
     if (res['status']) {
       ReleaseSingle release = ReleaseSingle.fromJson(res['body']);
@@ -44,9 +45,10 @@ class UploadBloc {
         upload.tracks[i].releaseId = release.releaseId.toString();
         print(upload.tracks[i].releaseId);
         print(music.toJson(upload.tracks[i]));
-        FormData datas = new FormData.from(music.toJson(upload.tracks[i]));
+        FormData datas = new FormData.fromMap(music.toJson(upload.tracks[i]));
         String response = await network
             .postWithFile(UiData.domain + "/songs/upload", body: datas);
+            print(response);
         var decoded = jsonDecode(response);
         if (decoded["status"]) {
           if (i + 1 == upload.tracksNumber) {
@@ -54,10 +56,14 @@ class UploadBloc {
             Navigator.of(context).pop();
             Navigator.of(context)
                 .pushReplacement(new MaterialPageRoute(builder: (context) {
-              return new UploadPayment(
+              return UploadFinish(
                   id: release.releaseId,
                   count: upload.tracksNumber,
-                  type: 'release',isDrawer: true);
+                  isDrawer: true);
+              // return new UploadPayment(
+              //     id: release.releaseId,
+              //     count: upload.tracksNumber,
+              //     type: 'release',isDrawer: true);
             }));
           }
         } else if (decoded["error"] != null) {
@@ -80,7 +86,7 @@ class UploadBloc {
     Music music = new Music();
 
     var response = await network.post(UiData.domain + "/songs/new-album",
-        body: newAlbum.toJson(newAlbum),context: context);
+        body: newAlbum.toJson(newAlbum), context: context);
 
     var res = jsonDecode(response);
 
@@ -90,7 +96,7 @@ class UploadBloc {
       for (var i = 0; i < upload.trackCount; i++) {
         upload.tracks[i].albumId = release.albumId.toString();
 
-        FormData datas = new FormData.from(music.toJson(upload.tracks[i]));
+        FormData datas = new FormData.fromMap(music.toJson(upload.tracks[i]));
 
         String response = await network
             .postWithFile(UiData.domain + "/songs/album-tracks", body: datas);
@@ -104,7 +110,10 @@ class UploadBloc {
             Navigator.of(context)
                 .pushReplacement(new MaterialPageRoute(builder: (context) {
               return new UploadPayment(
-                  id: release.albumId, count: upload.trackCount, type: 'album', isDrawer: true);
+                  id: release.albumId,
+                  count: upload.trackCount,
+                  type: 'album',
+                  isDrawer: true);
             }));
           }
         } else if (decoded["error"] != null) {

@@ -103,7 +103,8 @@ class NetworkRequest {
       _sendProgress.add([sent, total]);
     },
         options: new Options(
-            contentType: ContentType.parse("application/json"))).then(
+            contentType: Headers.jsonContentType)).then(
+               //ContentType.parse("application/json")
         (response) {
       final dynamic res = response;
       final int statusCode = response.statusCode;

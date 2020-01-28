@@ -32,4 +32,5 @@ final routes = <String, WidgetBuilder>{
   UiData.albumUploadInstruction: (BuildContext context) => new AlbumUploadInstruction(),
   UiData.albumCover: (BuildContext context) => new AlbumCover(),
   
+  
 };
