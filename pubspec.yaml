@@ -38,7 +38,7 @@ dependencies:
   datetime_picker_formfield: ^0.2.0
   dio: ^3.0.8
   flutter_paystack: ^1.0.1
-  url_launcher: ^5.0.3
+  url_launcher: ^5.4.1
   toast: ^0.1.4
 
 

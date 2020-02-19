@@ -534,7 +534,6 @@ class _MusicHomeState extends State<MusicHome> {
 
   //Iterable<Widget> _detailItemsFor(Section section) {
   _detailItemsFor(Section section) {
-    
     if (section.keyword == 'release') {
       musicBloc.getRelease(context);
       return StreamBuilder(
@@ -677,7 +676,9 @@ class _MusicHomeState extends State<MusicHome> {
                             _headingPageController, _detailsPageController);
                       },
                       child: PageView(
-                        physics: _headingScrollPhysics,
+                        // physics: _headingScrollPhysics,
+                        physics:new NeverScrollableScrollPhysics(), // I completely disabled left and right swiping
+                        
                         controller: _headingPageController,
                         children: _allHeadingItems(
                             appBarMaxHeight, appBarMidScrollOffset),
@@ -695,6 +696,7 @@ class _MusicHomeState extends State<MusicHome> {
                             _detailsPageController, _headingPageController);
                       },
                       child: PageView(
+                        physics:new NeverScrollableScrollPhysics(), // to disable left and right swiping
                         controller: _detailsPageController,
                         children: allSections.map<Widget>((Section section) {
                           ///Replace Column with This:

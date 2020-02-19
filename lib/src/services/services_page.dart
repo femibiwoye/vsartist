@@ -20,7 +20,7 @@ class ServicesHome extends StatelessWidget {
                 ),
                 SizedBox(height: 17.0),
                 new Text(
-                  "For more promotional services like:",
+                  "We offer Digital Stores Promotions.",
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.orange.shade700,
@@ -31,22 +31,14 @@ class ServicesHome extends StatelessWidget {
                 new ListTile(
                   leading: new MyBullet(),
                   title: new Text(
-                    '2D Animation Lyrics Videos',
+                    'iTunes and 13 other international streaming platforms.',
                     style: TextStyle(fontSize: 17.0, color: Colors.white),
                   ),
                 ),
                 new ListTile(
                   leading: new MyBullet(),
                   title: new Text(
-                    'Radio Promotion',
-                    style: TextStyle(fontSize: 17.0, color: Colors.white),
-                  ),
-                ),
-
-                new ListTile(
-                  leading: new MyBullet(),
-                  title: new Text(
-                    'Tv Promotion',
+                    'Spotify Promotions and other Digital stores Promotion.',
                     style: TextStyle(fontSize: 17.0, color: Colors.white),
                   ),
                 ),
@@ -54,28 +46,50 @@ class ServicesHome extends StatelessWidget {
                 new ListTile(
                   leading: new MyBullet(),
                   title: new Text(
-                    'Instagram and Facebook Ads',
+                    'Music Video Animation.',
+                    style: TextStyle(fontSize: 17.0, color: Colors.white),
+                  ),
+                ),
+
+                new ListTile(
+                  leading: new MyBullet(),
+                  title: new Text(
+                    'Lyrics Video.',
                     style: TextStyle(fontSize: 17.0, color: Colors.white),
                   ),
                 ),
                 new ListTile(
                   leading: new MyBullet(),
                   title: new Text(
-                    'Callertunes',
+                    'Twitter Trend.',
                     style: TextStyle(fontSize: 17.0, color: Colors.white),
                   ),
                 ),
                 new ListTile(
                   leading: new MyBullet(),
                   title: new Text(
-                    'Growing of Instagram Account',
+                    'Radio and TV Promo.',
                     style: TextStyle(fontSize: 17.0, color: Colors.white),
                   ),
                 ),
                 new ListTile(
                   leading: new MyBullet(),
                   title: new Text(
-                    'Youtube Ads',
+                    'Sponsored Ads (IG, FB, YouTube).',
+                    style: TextStyle(fontSize: 17.0, color: Colors.white),
+                  ),
+                ),
+                new ListTile(
+                  leading: new MyBullet(),
+                  title: new Text(
+                    'Callertunes.',
+                    style: TextStyle(fontSize: 17.0, color: Colors.white),
+                  ),
+                ),
+                new ListTile(
+                  leading: new MyBullet(),
+                  title: new Text(
+                    'Youtube Vevo, YouTube Promotions (Views and Subscribers).',
                     style: TextStyle(fontSize: 17.0, color: Colors.white),
                   ),
                 ),
