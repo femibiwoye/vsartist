@@ -34,13 +34,11 @@ doLogin(String username, String password, context) async {
     return network
         .guestPost(UiData.domain + "/artist-auth/login", body: body)
         .then((dynamic response) {
-          print('data from serve: ${response['data']}');
       response = response['data'];
       var res = jsonDecode(response);
       if (res["status"]) {
         User user = User.map(res["body"]);
         String userData = jsonEncode(res["body"]);
-        print(userData);
         SharedData _pref = SharedData();
         _pref.setisUserLogin(true);
         _pref.setAuthToken(user.token);

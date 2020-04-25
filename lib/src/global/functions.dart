@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vsartist/src/global/uidata.dart';
 import 'package:vsartist/src/global/networks.dart';
 import 'package:vsartist/src/uploads/payment-bloc.dart';
@@ -29,6 +30,20 @@ class Functions {
     if (await networkBloc.checkInternet() != null) {
       this.showSnack(await networkBloc.checkInternet(), scaffoldState);
     }
+  }
+
+showToast(data) {
+    //Toast.show(data, context,
+      //  duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Fluttertoast.showToast(
+        msg: data,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: UiData.orange,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
   }
 
   showSnack(data, scaffoldState) {
@@ -110,7 +125,6 @@ class Functions {
       ));
 
   successTicket(context, _done, PaymentDetailsModel data) {
-    print('ticket is called');
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16.0),

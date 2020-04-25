@@ -13,7 +13,7 @@ import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:vsartist/src/global/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vsartist/src/global/networks.dart';
-import 'package:toast/toast.dart';
+// import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 
 class UploadPayment extends StatefulWidget {
@@ -38,6 +38,7 @@ class _UploadPaymentState extends State<UploadPayment> {
   final _formKey = GlobalKey<FormState>();
   FormsWidget formsWidget = FormsWidget();
   CardDetails cardDetails = CardDetails();
+  Functions functions = new Functions();
   final formatCurrency = new NumberFormat.simpleCurrency();
 
   PaymentDetailsModel paymentDetails = PaymentDetailsModel();
@@ -54,8 +55,7 @@ class _UploadPaymentState extends State<UploadPayment> {
   }
 
   void showToast() {
-    Toast.show("Test show", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    functions.showToast("Test show");
   }
 
   Future<dynamic> initiatePayment() {
@@ -233,19 +233,17 @@ print('ccc 6');
               var json = jsonDecode(dynamicsv);
               if (!json.isEmpty) {
                 if (json['status'] && json['transaction_status'] == 'success') {
-                  Toast.show('Success', context,
-                      duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                  functions.showToast('Success');
+                  
                   Navigator.pop(context);
                 } else {
-                  Toast.show('Error occured', context,
-                      duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                  functions.showToast('Error occured');
                 }
               }
             });
           });
         } else {
-          Toast.show(json['proceed'], context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          functions.showToast(json['proceed']);
         }
       }
     });

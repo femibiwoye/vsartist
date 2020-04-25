@@ -11,7 +11,7 @@ description: Artist application for vibespot music player.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+2
+version: 1.0.4+6
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -39,7 +39,8 @@ dependencies:
   dio: ^3.0.8
   flutter_paystack: ^1.0.1
   url_launcher: ^5.4.1
-  toast: ^0.1.4
+  # toast: ^0.1.4
+  fluttertoast: ^4.0.0
 
 
 dev_dependencies:

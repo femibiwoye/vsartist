@@ -53,8 +53,6 @@ class NetworkRequest {
         .then((response) {
       final String res = response.body;
       final int statusCode = response.statusCode;
-      print(res);
-      print(statusCode);
       authLogout(statusCode, context);
       if (statusCode < 200 || statusCode > 422 || json == null) {
         throw new Exception("Error while fetching data");
@@ -77,8 +75,6 @@ class NetworkRequest {
       final String res = response.body;
       final int statusCode = response.statusCode;
       authLogout(statusCode, context);
-      print('post: $statusCode');
-      print('post: $res');
       if (statusCode < 200 || statusCode > 422 || json == null) {
         throw new Exception("Error while fetching data");
       }
@@ -97,7 +93,7 @@ class NetworkRequest {
 
     Dio dio = new Dio();
     dio.options.headers = headers;
-
+try {
     return dio.post(url, data: body, onSendProgress: (int sent, int total) {
       print("$sent $total");
       _sendProgress.add([sent, total]);
@@ -111,11 +107,24 @@ class NetworkRequest {
       print('Network response: $statusCode');
       print('Network response: $res');
       authLogout(statusCode, context);
-      if (statusCode < 200 || statusCode > 422 || json == null) {
-        throw new Exception("Error while fetching data");
-      }
+      // if (statusCode < 200 || statusCode > 422 || json == null) {
+      //   throw new Exception("Error while fetching data");
+      // }
       return res.toString();
     });
+    } on DioError catch(e) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx and is also not 304.
+    if(e.response != null) {
+        print(e.response.data);
+        print(e.response.headers);
+        print(e.response.request);
+    } else{
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+    }
+}
   }
 
   Future<dynamic> guestGet(String url) {

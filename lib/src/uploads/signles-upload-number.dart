@@ -34,7 +34,7 @@ class _SignlesUploadNumberState extends State<SignlesUploadNumber> {
     // TODO: implement initState
     super.initState();
 
-    uploadDate = uploadDate.add(Duration(days: 2));
+    // uploadDate = uploadDate.add(Duration(days: 2));
   }
 
   trackLists() {

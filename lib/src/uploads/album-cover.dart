@@ -32,7 +32,7 @@ class _AlbumCoverState extends State<AlbumCover> {
     // TODO: implement initState
     super.initState();
     getTrackNumber(1, 15);
-    uploadDate = uploadDate.add(Duration(days: 7));
+    //uploadDate = uploadDate.add(Duration(days: 7));
   }
 
   getTrackNumber(start, end) {
@@ -80,7 +80,6 @@ class _AlbumCoverState extends State<AlbumCover> {
     for (var i = 0; i < count; i++) {
       data.add(new Music());
     }
-    print(data);
     return data;
   }
 

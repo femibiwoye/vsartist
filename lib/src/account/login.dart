@@ -45,7 +45,6 @@ class _LoginState extends State<Login> {
 
   @override
   void onLoginSuccess(User user) async {
-    print(user.name);
     _showSnackBar('Successfully logged in');
     Timer(new Duration(seconds: 2), vibestreamRedirect);
   }
@@ -110,7 +109,8 @@ class _LoginState extends State<Login> {
                   _passwordContainer(),
                   SizedBox(height: 20),
                   loginButto(),
-                  forgotPassword(),
+                  SizedBox(height: 20),
+                  //forgotPassword(),
                   _registerNowLabel(),
                 ],
               ))),

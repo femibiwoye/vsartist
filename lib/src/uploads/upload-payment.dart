@@ -13,7 +13,7 @@ import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:vsartist/src/global/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vsartist/src/global/networks.dart';
-import 'package:toast/toast.dart';
+// import 'package:toast/toast.dart';
 
 class UploadPayment extends StatefulWidget {
   final int id;
@@ -38,6 +38,7 @@ class _UploadPaymentState extends State<UploadPayment> {
   FormsWidget formsWidget = FormsWidget();
   CardDetails cardDetails = CardDetails();
   final formatCurrency = new NumberFormat.simpleCurrency();
+  Functions functions = new Functions();
 
   PaymentDetailsModel paymentDetails = PaymentDetailsModel();
 
@@ -378,20 +379,18 @@ class _UploadPaymentState extends State<UploadPayment> {
               var json = jsonDecode(dynamicsv);
               if (!json.isEmpty) {
                 if (json['status']) {
-                  Toast.show(json['data'], context,
-                      duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                      functions.showToast(json['data']);
                   loadPage();
                   Navigator.pop(context);
                 } else {
-                  Toast.show('Error occured', context,
-                      duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                  functions.showToast('Error occured');
                 }
               }
             });
           });
         } else {
-          Toast.show(json['proceed'], context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          functions.showToast(json['proceed']);
+          
         }
       }
     });

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class UiData {
   
-  static const String homeDomain = "http://api.vibespotmusic.com/a1";
-  static const String domain = "http://api.vibespotmusic.com/a1";
+  static const String homeDomain = "https://api.vibespotmusic.com/a1";
+  static const String domain = "https://api.vibespotmusic.com/a1";
   
   //static const String homeDomain = "http://vibespot.akiba.ng/api/a1";
   //static const String domain = "http://vibespot.akiba.ng/api/a1";
@@ -36,9 +36,10 @@ class UiData {
   static const String myStatistics = "/myStatistics";
   static const String help = "/help";/// This to be a link to FAQ on a website
   static const String servicesHome = "/servicesHome";
+  static const String withdraw = "/withdraw";
 
-  static const String paymentKey = 'pk_test_47e502216ebf7256414e0e27494a4132c5c81e63'; //For testing
-  //static const String paymentKey = 'pk_live_4531751ef20bb49fe16fcb718dc78bd5c12b183a';
+  //static const String paymentKey = 'pk_test_47e502216ebf7256414e0e27494a4132c5c81e63'; //For testing
+  static const String paymentKey = 'pk_live_4531751ef20bb49fe16fcb718dc78bd5c12b183a';
   
 
   //strings

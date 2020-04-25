@@ -354,17 +354,32 @@ class FormsWidget {
     );
   }
 
-  Widget wideButton(title, context, _continue) {
+  Widget wideButton(title, context, _continue,{disable:false}) {
     return ButtonTheme(
       minWidth: MediaQuery.of(context).size.width,
       height: 55.0,
-      buttonColor: UiData.orange,
+      buttonColor: disable?Colors.grey:UiData.orange,
       child: RaisedButton(
         shape: new RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(30.0)),
         elevation: 5,
         onPressed: _continue,
         child: Text(title, style: TextStyle(fontSize: 17, color: Colors.white)),
+      ),
+    );
+  }
+
+  Widget smallButton(title, context, _continue) {
+    return ButtonTheme(
+      //minWidth: MediaQuery.of(context).size.width,
+      height: 20.0,
+      buttonColor: UiData.orange,
+      child: RaisedButton(
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(20.0)),
+        elevation: 5,
+        onPressed: _continue,
+        child: Text(title, style: TextStyle(fontSize: 10, color: Colors.white)),
       ),
     );
   }

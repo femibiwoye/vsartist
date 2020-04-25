@@ -1,4 +1,5 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:vsartist/src/global/functions.dart';
 import 'dart:convert';
 import 'package:vsartist/src/global/networks.dart';
 import 'package:vsartist/src/global/uidata.dart';
@@ -6,9 +7,10 @@ import 'package:vsartist/src/wallet/wallet-model.dart';
 
 class WalletBloc {
   NetworkRequest network = new NetworkRequest();
+  Functions functions = new Functions();
 
-  final _balance = PublishSubject<String>();
-  Observable<String> get balance => _balance.stream;
+  final _balance = BehaviorSubject<dynamic>();
+  BehaviorSubject<dynamic> get balance => _balance.stream;
 
   final _history = PublishSubject<List<BalanceHistory>>();
   Observable<List<BalanceHistory>> get history => _history.stream;
@@ -28,6 +30,31 @@ class WalletBloc {
       return;
     }
     _balance.sink.add(response['balance']);
+  }
+
+  getWithdrawBalance(context) async {
+    String parsed =
+        await network.get(Uri.encodeFull(UiData.domain + "/payment/withdrawal-balance"),context:context);
+    var response = jsonDecode(parsed);
+    if (response["status"] == false) {
+      snackBar.add('Could not fetch balance');
+      return;
+    }
+    _balance.add(response['data']);
+    //functions.showToast(response['balance']);
+  }
+
+  //? Request for withdrawal
+  requestWithdraw(amount, context) async {
+    String temp = await network.get(Uri.encodeFull(
+        UiData.domain + "/payment/request-withdraw?amount=$amount"));
+        print(temp);
+    var response = jsonDecode(temp);
+    if (response["status"] == false) {
+      functions.showToast('Could not be processed');
+      return;
+    }
+    functions.showToast(response["data"]['message']);
   }
 
   getHistory() async {

@@ -5,6 +5,7 @@ import 'package:vsartist/src/onboarding/onboarding.dart';
 import 'package:vsartist/src/account/login.dart';
 import 'package:vsartist/src/dashboard.dart';
 import 'package:vsartist/src/account/signup.dart';
+import 'package:vsartist/src/profile/withdraw.dart';
 import 'package:vsartist/src/services/services_page.dart';
 import 'package:vsartist/src/uploads/album-cover.dart';
 import 'package:vsartist/src/uploads/album-upload-instruction.dart';
@@ -31,6 +32,5 @@ final routes = <String, WidgetBuilder>{
   UiData.servicesHome: (BuildContext context) => new ServicesHome(),
   UiData.albumUploadInstruction: (BuildContext context) => new AlbumUploadInstruction(),
   UiData.albumCover: (BuildContext context) => new AlbumCover(),
-  
-  
+  UiData.withdraw: (BuildContext context) => new Withdraw(),
 };

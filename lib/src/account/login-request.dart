@@ -20,10 +20,7 @@ class LoginRequest {
   doLogin(String username, String password) async {
     showProgress.add(true);
     NetworkRequest network = new NetworkRequest();
-    print(UiData.domain + "/artist-auth/login");
-    print(UiData.domain + "/artist-auth/login");
     var body = {"username": username, "password": password};
-    print(body);
     return network
         .guestPost(UiData.domain + "/artist-auth/login", body: body)
         .then((dynamic response) {

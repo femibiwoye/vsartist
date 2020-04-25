@@ -1,12 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:vsartist/src/uploads/singles-upload-finish.dart';
 import 'package:vsartist/src/uploads/uploads-model.dart';
 import 'package:vsartist/src/global/networks.dart';
-import 'package:path/path.dart' as path;
-import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:vsartist/src/global/uidata.dart';
 import 'package:flutter/material.dart';
@@ -46,25 +42,28 @@ class UploadBloc {
         print(upload.tracks[i].releaseId);
         print(music.toJson(upload.tracks[i]));
         FormData datas = new FormData.fromMap(music.toJson(upload.tracks[i]));
+        print('About uploading');
         String response = await network
             .postWithFile(UiData.domain + "/songs/upload", body: datas);
             print(response);
         var decoded = jsonDecode(response);
+        print('I got the response ${decoded["status"]}');
         if (decoded["status"]) {
           if (i + 1 == upload.tracksNumber) {
             snackBar.add('$i track uploaded');
             Navigator.of(context).pop();
-            Navigator.of(context)
-                .pushReplacement(new MaterialPageRoute(builder: (context) {
-              return UploadFinish(
-                  id: release.releaseId,
-                  count: upload.tracksNumber,
-                  isDrawer: true);
-              // return new UploadPayment(
-              //     id: release.releaseId,
-              //     count: upload.tracksNumber,
-              //     type: 'release',isDrawer: true);
-            }));
+            Navigator.of(context).pushReplacementNamed(UiData.myMusic);
+            // Navigator.of(context)
+            //     .pushReplacement(new MaterialPageRoute(builder: (context) {
+            //   return UploadFinish(
+            //       id: release.releaseId,
+            //       count: upload.tracksNumber,
+            //       isDrawer: true);
+            //   // return new UploadPayment(
+            //   //     id: release.releaseId,
+            //   //     count: upload.tracksNumber,
+            //   //     type: 'release',isDrawer: true);
+            // }));
           }
         } else if (decoded["error"] != null) {
           print(decoded["error"][0]);
@@ -95,7 +94,8 @@ class UploadBloc {
 
       for (var i = 0; i < upload.trackCount; i++) {
         upload.tracks[i].albumId = release.albumId.toString();
-
+        upload.tracks[i].release_date = release.releaseDate.toString();
+print(music.toJson(upload.tracks[i]));
         FormData datas = new FormData.fromMap(music.toJson(upload.tracks[i]));
 
         String response = await network
@@ -107,14 +107,15 @@ class UploadBloc {
             snackBar.add('$i track uploaded');
 
             Navigator.of(context).pop();
-            Navigator.of(context)
-                .pushReplacement(new MaterialPageRoute(builder: (context) {
-              return new UploadPayment(
-                  id: release.albumId,
-                  count: upload.trackCount,
-                  type: 'album',
-                  isDrawer: true);
-            }));
+            Navigator.of(context).pushReplacementNamed(UiData.myMusic);
+            // Navigator.of(context)
+            //     .pushReplacement(new MaterialPageRoute(builder: (context) {
+            //   return new UploadPayment(
+            //       id: release.albumId,
+            //       count: upload.trackCount,
+            //       type: 'album',
+            //       isDrawer: true);
+            // }));
           }
         } else if (decoded["error"] != null) {
           snackBar.add(decoded["error"][0] ?? 'You have invalid field');

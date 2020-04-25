@@ -37,7 +37,6 @@ class DatabaseHelper {
     phone TEXT,
     image TEXT
     )""");
-    print("Created tables");
   }
 
 Future<int> saveUser(User user) async {

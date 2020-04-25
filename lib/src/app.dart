@@ -39,7 +39,6 @@ class App extends StatelessWidget {
   }
 
   Widget getErrorWidget(BuildContext context, FlutterErrorDetails error) {
-    print('The error message is $error');
     return Center(
       child: Text(
         "Something went wrong here",

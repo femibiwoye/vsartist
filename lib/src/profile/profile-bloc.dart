@@ -21,7 +21,6 @@ class ProfileBloc {
     ProfileModel model;
     String parsed =
         await network.get(Uri.encodeFull(UiData.domain + "/profile/index"),context:context);
-    print('Server Resp: $parsed');
     var response = jsonDecode(parsed);
     if (response["status"] == false) {
       snackBar.add(response['msg']);
@@ -62,13 +61,10 @@ class ProfileBloc {
     return network
         .post(UiData.domain + "/profile/edit", body: body)
         .then((res) {
-      print('server response is $res');
       var response = jsonDecode(res);
 
       ///Will use this incase there is error or success
       if (response["status"] == false) {
-        print('msg is ${response['msg']}');
-
         _showProgress.add(false);
         Map<dynamic, dynamic> fridgesDs = response['msg'];
         fridgesDs.forEach((key, value) {
@@ -79,7 +75,6 @@ class ProfileBloc {
         //updateLoginProfile(response["user"]);
         SharedData _pref = SharedData();
         _pref.setAuthUserData(jsonEncode(response['body']));
-        print(response['body']);
         snackBar.add('Successful');
       } else {
         snackBar.add('Something went wrong');

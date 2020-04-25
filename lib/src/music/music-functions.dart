@@ -11,38 +11,38 @@ class MusicFunctions {
       shrinkWrap: true,
       itemCount: data.length,
       itemBuilder: (context, i) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new ListTile(
-                  onTap: () {
-                    print('album id is ${data[i].albumId}');
-                    Navigator.of(context)
-                        .push(new MaterialPageRoute(builder: (context) {
-                      return new MusicDetails(song: data[i]);
-                    }));
-                  },
-                  leading: new CircleAvatar(
-                    foregroundColor: Theme.of(context).primaryColor,
-                    backgroundColor: Colors.orangeAccent[700],
-                    backgroundImage: data[i].image == null
-                        ? new AssetImage(UiData.logo)
-                        : new NetworkImage(data[i].image),
-                  ),
-                  title: new Text('${data[i].title}',
-                      style: TextStyle(color: Colors.white)),
-                  subtitle: new Text(
-                    '${data[i].duration} (${data[i].streamed} streams)' ?? data[i].description,
-                    style: TextStyle(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 11.0),
-                  ),
-                  trailing: new Text(
-                    data[i].genre,
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                )
-              ]),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new ListTile(
+              onTap: () {
+                Navigator.of(context)
+                    .push(new MaterialPageRoute(builder: (context) {
+                  return new MusicDetails(song: data[i]);
+                }));
+              },
+              leading: new CircleAvatar(
+                foregroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Colors.orangeAccent[700],
+                backgroundImage: data[i].image == null
+                    ? new AssetImage(UiData.logo)
+                    : new NetworkImage(data[i].image),
+              ),
+              title: new Text('${data[i].title}',
+                  style: TextStyle(color: Colors.white)),
+              subtitle: new Text(
+                '${data[i].duration} (${data[i].streamed} streams)' ??
+                    data[i].description,
+                style: TextStyle(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11.0),
+              ),
+              trailing: new Text(
+                data[i].genre,
+                style: TextStyle(color: Colors.grey),
+              ),
+            )
+          ]),
     );
   }
 
@@ -51,33 +51,33 @@ class MusicFunctions {
       shrinkWrap: true,
       itemCount: data.length,
       itemBuilder: (context, i) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new ListTile(
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(new MaterialPageRoute(builder: (context) {
-                      return new MusicList(
-                          id: data[i].releaseId,
-                          type: 'release',
-                          title: data[i].releaseName);
-                    }));
-                  },
-                  title: new Text(data[i].releaseName,
-                      style: TextStyle(color: Colors.white)),
-                  subtitle: new Text(
-                    data[i].releaseDate,
-                    style: TextStyle(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 11.0),
-                  ),
-                  trailing: new Text(
-                    data[i].tracksNumber,
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                )
-              ]),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new ListTile(
+              onTap: () {
+                Navigator.of(context)
+                    .push(new MaterialPageRoute(builder: (context) {
+                  return new MusicList(
+                      id: data[i].releaseId,
+                      type: 'release',
+                      title: data[i].releaseName);
+                }));
+              },
+              title: new Text(data[i].releaseName,
+                  style: TextStyle(color: Colors.white)),
+              subtitle: new Text(
+                data[i].releaseDate,
+                style: TextStyle(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11.0),
+              ),
+              trailing: new Text(
+                data[i].tracksNumber,
+                style: TextStyle(color: Colors.grey),
+              ),
+            )
+          ]),
     );
   }
 
@@ -88,9 +88,10 @@ class MusicFunctions {
         shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context, i) {
-          
           if (data[i]['paid_amount'] != null &&
               data[i]['payment_status'] == "1") {
+            status = true;
+          } else if (data[i]['type'] == 'release') {
             status = true;
           } else {
             status = false;
@@ -99,17 +100,18 @@ class MusicFunctions {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new ListTile(
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(new MaterialPageRoute(builder: (context) {
-                      return new UploadPayment(
-                        id: int.tryParse(data[i]['id']),
-                        type: data[i]['type'],
-                        isDrawer: false,
-                        count: int.tryParse(data[i]['track_count']),
-                      );
-                    }));
-                  },
+                  //onTap: () {
+                  // if(data[i]['type'] == 'album')
+                  // Navigator.of(context)
+                  //     .push(new MaterialPageRoute(builder: (context) {
+                  //   return new UploadPayment(
+                  //     id: int.tryParse(data[i]['id']),
+                  //     type: data[i]['type'],
+                  //     isDrawer: false,
+                  //     count: int.tryParse(data[i]['track_count']),
+                  //   );
+                  // }));
+                  //},
                   title: new Text(
                       '${data[i]['title']} (${data[i]['track_count']})',
                       style: TextStyle(color: Colors.white)),
@@ -121,7 +123,7 @@ class MusicFunctions {
                         fontSize: 11.0),
                   ),
                   trailing: new Text(
-                    status ? 'Yet Published' : 'Unpaid',
+                    'Yet Published',
                     style:
                         TextStyle(color: status ? Colors.grey : Colors.orange),
                   ),
@@ -135,40 +137,38 @@ class MusicFunctions {
       shrinkWrap: true,
       itemCount: data.length,
       itemBuilder: (context, i) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new ListTile(
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(new MaterialPageRoute(builder: (context) {
-                      return new MusicList(
-                          id: data[i].albumId,
-                          type: 'album',
-                          title: data[i].title);
-                    }));
-                  },
-                  leading: new CircleAvatar(
-                    foregroundColor: Theme.of(context).primaryColor,
-                    backgroundColor: Colors.orangeAccent[700],
-                    backgroundImage: data[i].image == null
-                        ? new AssetImage(UiData.logo)
-                        : new NetworkImage(data[i].image),
-                  ),
-                  title: new Text(data[i].title,
-                      style: TextStyle(color: Colors.white)),
-                  subtitle: new Text(
-                    data[i].releaseDate,
-                    style: TextStyle(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 11.0),
-                  ),
-                  trailing: new Text(
-                    data[i].trackCount,
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                )
-              ]),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new ListTile(
+              onTap: () {
+                Navigator.of(context)
+                    .push(new MaterialPageRoute(builder: (context) {
+                  return new MusicList(
+                      id: data[i].albumId, type: 'album', title: data[i].title);
+                }));
+              },
+              leading: new CircleAvatar(
+                foregroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Colors.orangeAccent[700],
+                backgroundImage: data[i].image == null
+                    ? new AssetImage(UiData.logo)
+                    : new NetworkImage(data[i].image),
+              ),
+              title: new Text(data[i].title,
+                  style: TextStyle(color: Colors.white)),
+              subtitle: new Text(
+                data[i].releaseDate,
+                style: TextStyle(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11.0),
+              ),
+              trailing: new Text(
+                data[i].trackCount,
+                style: TextStyle(color: Colors.grey),
+              ),
+            )
+          ]),
     );
   }
 }
