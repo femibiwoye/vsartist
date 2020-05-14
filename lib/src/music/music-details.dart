@@ -41,6 +41,8 @@ class MusicDetails extends StatelessWidget {
                     divider(),
                     list('Duration', song.duration),
                     list('Streamed', song.streamed),
+                    list('paidCount', song.paidCount),
+                    list('paidSum', song.paidSum),
                     divider(),
                     song.vibe_state != null && song.vibe_state.isNotEmpty
                         ? list('State Vibe', song.vibe_state)

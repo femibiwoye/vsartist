@@ -36,6 +36,7 @@ class MusicBloc {
 
     String parsed =
         await network.get(Uri.encodeFull(UiData.domain + "/songs/my-music"),context:context);
+        print(parsed);
     var response = jsonDecode(parsed);
     if (response["status"] == false) {
       snackBar.add('Could not fetch songs');

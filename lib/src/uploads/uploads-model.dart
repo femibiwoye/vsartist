@@ -149,9 +149,12 @@ class ReleaseSingle {
   factory ReleaseSingle.fromJson(Map<String, dynamic> json) {
     return new ReleaseSingle(
       releaseId: json['id'],
-      amountExpected:json['amount_expected']!=null && json['amount_expected'] is int
-          ? json['amount_expected']
-          : json['amount_expected']!=null ?int.tryParse(json['amount_expected']):null,
+      amountExpected:
+          json['amount_expected'] != null && json['amount_expected'] is int
+              ? json['amount_expected']
+              : json['amount_expected'] != null
+                  ? int.tryParse(json['amount_expected'])
+                  : null,
       tracksNumber: json['track_count'].toString(),
       releaseName: json['release_name'],
       releaseDate: json['release_date'].toString(),
@@ -174,6 +177,8 @@ class Music {
   String push_city;
   String stream;
   String streamed;
+  String paidCount;
+  String paidSum;
   String release_date;
   String image;
   String song;
@@ -193,6 +198,8 @@ class Music {
       this.push_state,
       this.stream,
       this.streamed,
+      this.paidCount,
+      this.paidSum,
       this.release_date,
       this.image,
       this.song,
@@ -214,10 +221,12 @@ class Music {
       'push_city': instance.push_city,
       'push_state': instance.push_state,
       'stream': instance.stream,
+      'paidCount': instance.paidCount,
+      'paidSum': instance.paidSum,
       'release_date': instance.release_date,
       'image': instance.image,
       //'song': new UploadFileInfo(new File(instance.song), fileName),
-      'song':  MultipartFile.fromFileSync(instance.song, filename: fileName),
+      'song': MultipartFile.fromFileSync(instance.song, filename: fileName),
     };
   }
 
@@ -236,6 +245,8 @@ class Music {
         push_state: json['push_state'],
         stream: json['stream'].toString(),
         streamed: json['streamed'].toString(),
+        paidCount: json['paidCount'] != null ? json['paidCount'] : "0",
+        paidSum: json['paidSum'] != null ? json['paidSum'] : "0",
         release_date: json['release_date'],
         image: json['image'],
         song: json['song'],

@@ -88,11 +88,12 @@ class UploadBloc {
         body: newAlbum.toJson(newAlbum), context: context);
 
     var res = jsonDecode(response);
-
+print('1');
     if (res['status']) {
       UploadAlbumDetails release = UploadAlbumDetails.fromJson(res['body']);
-
+print('2');
       for (var i = 0; i < upload.trackCount; i++) {
+        print('3');
         upload.tracks[i].albumId = release.albumId.toString();
         upload.tracks[i].release_date = release.releaseDate.toString();
 print(music.toJson(upload.tracks[i]));

@@ -82,13 +82,13 @@ class _AlbumUploadState extends State<AlbumUpload>
             initialData: false,
             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.data) {
-                //return new Center(child: CircularProgressIndicator());
-                return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 20),
-                    child: (index < count)
-                        ? formsWidget.wideButton('NEXT', context, _submit)
-                        : formsWidget.wideButton('UPLOAD', context, _submit));
+                return new Center(child: CircularProgressIndicator());
+                // return Padding(
+                //     padding: const EdgeInsets.symmetric(
+                //         horizontal: 8.0, vertical: 20),
+                //     child: (index < count)
+                //         ? formsWidget.wideButton('NEXT', context, _submit)
+                //         : formsWidget.wideButton('UPLOAD', context, _submit));
               } else {
                 return Padding(
                     padding: const EdgeInsets.symmetric(
